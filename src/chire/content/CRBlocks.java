@@ -6,8 +6,11 @@ import arc.math.Mathf;
 import arc.struct.EnumSet;
 import chire.world.CRColer;
 import chire.world.blocks.campaign.NewAccelerator;
+import chire.world.blocks.campaign.SunLaunchPad;
 import chire.world.blocks.defense.turrets.LastResortTurret;
+import chire.world.blocks.distribution.CoiledDuct;
 import chire.world.blocks.special.NewtwoWhit;
+import chire.world.blocks.storage.DesertCoreBlock;
 import chire.world.blocks.storage.GoodCoreBlock;
 import chire.world.blocks.storage.LimitedCoreBlock;
 import mindustry.content.Fx;
@@ -27,17 +30,24 @@ import mindustry.type.LiquidStack;
 import mindustry.world.Block;
 import mindustry.world.blocks.campaign.LaunchPad;
 import mindustry.world.blocks.defense.Door;
+import mindustry.world.blocks.distribution.Duct;
 import mindustry.world.blocks.environment.EmptyFloor;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.production.GenericCrafter;
+import mindustry.world.blocks.sandbox.ItemSource;
+import mindustry.world.blocks.sandbox.PowerSource;
 import mindustry.world.meta.BlockFlag;
+import mindustry.world.meta.BuildVisibility;
 
 import static mindustry.type.ItemStack.with;
 
 
 public class CRBlocks {
     public static Block WhatWall, ModelCcore, oilRefiner, CRlaunchPad, CRinterplanetaryAccelerator, chireduo, limitedcore,
-            lastresort, lightSpace;
+            lastresort, lightSpace, CRpowerSource, CRitemSource,
+
+    //斯坦沐
+    coiledduct, desertcore;
     public CRBlocks() {
     }
     public static void loadEnv() {
@@ -107,15 +117,41 @@ public class CRBlocks {
             unitCapModifier = 8;
         }};
 
+        desertcore = new DesertCoreBlock("desert-core"){{
+            requirements(Category.effect, with(Items.copper, 2));
+            alwaysUnlocked = true;
 
-        CRlaunchPad = new LaunchPad("CR-launch-pad"){{
-            requirements(Category.effect, with(Items.copper, 350, Items.silicon, 140, Items.lead, 200, Items.titanium, 150));
+            isFirstTier = true;
+            unitType = UnitTypes.alpha;
+            health = 1100;
+            itemCapacity = 4000;
+            size = 4;
+
+            powerOutput = 2000f;
+
+            unitCapModifier = 8;
+        }};
+
+
+        CRlaunchPad = new SunLaunchPad("CR-launch-pad"){{
+            requirements(Category.effect, with(Items.copper, 3));
             size = 3;
             itemCapacity = 100;
             launchTime = 60f * 20;
-            hasPower = true;
-            consumePower(4f);
+            hasPower = false;
+//            consumePower(4f);
         }};
+        //TODO 模组测试作弊
+        CRpowerSource = new PowerSource("CR-power-source"){{
+            requirements(Category.power, with());
+            powerProduction = 1000000f / 60f;
+            alwaysUnlocked = true;
+        }};
+        CRitemSource = new ItemSource("CR-item-source"){{
+            requirements(Category.distribution, with());
+            alwaysUnlocked = true;
+        }};
+
         CRinterplanetaryAccelerator = new NewAccelerator("new-interplanetary-accelerator"){{
             requirements(Category.effect, with(Items.copper, 16));
             researchCostMultiplier = 0.1f;
@@ -170,9 +206,20 @@ public class CRBlocks {
             limitRange();
         }};
 
+        coiledduct = new CoiledDuct("coiled-duct"){{
+            requirements(Category.distribution, with(Items.copper, 1));
+            health = 90;
+            speed = 4f;
+            hasPower = true;
+            consumesPower = true;
+            conductivePower = true;
+            researchCost = with(Items.copper, 5);
+        }};
+
+
 //        asd = new BuildPayload(chireduo, Team.derelict){};
 
-        //尝试复刻而且加强<最终手段>
+        //尝试复刻而且加强<最终手段> json源作者:Ra
         lastresort = new LastResortTurret("Last-Resort") {{
             description = "[yellow]呼叫一次[red]无视敌我的轨道轰炸[yellow]毁灭附近的区域。[white]检测范围小，需要机载投放。\n[yellow]需要5秒开机准备时间.";
             health = 830;

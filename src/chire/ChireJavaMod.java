@@ -4,6 +4,7 @@ import arc.*;
 import arc.scene.ui.layout.Table;
 import arc.util.*;
 import chire.content.*;
+import chire.graphics.CREnvRenderers;
 import mindustry.Vars;
 import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
@@ -16,7 +17,7 @@ import mindustry.ui.dialogs.*;
 //Specify your GitHub account to access all of your repositories from the IDE.
 //Clone repositories, create and review pull requests, create gists, and much more.
 //To configure, open Settings / Preferences and go to Version Control | GitHub.
-//Requires the Git plugin.
+//Requires the Git plugin. coiled
 public class ChireJavaMod extends Mod{
     private final Table table = new Table();
     private final float num = 6, size = 45 * num;
@@ -89,5 +90,6 @@ public class ChireJavaMod extends Mod{
         CRPlanets.load();
         CRTechTree.load();
         CRUnitTypes.load();
+        CRWeathers.load();
     }
 }

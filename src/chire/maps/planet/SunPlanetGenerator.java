@@ -40,11 +40,11 @@ public class SunPlanetGenerator extends BlankPlanetGenerator {
             camPos = new Vec3(1.2388899f, 1.6047299f, /*2.4758825f*/0);
         }};
 
-        pass((x, y) -> {
-            if(noise(x, y, 1, 3f, 13f, 10f) > 0.59f){
-                floor = Blocks.cryofluid;
-            }
-        });
+//        pass((x, y) -> {
+//            if(noise(x, y, 1, 3f, 13f, 10f) > 0.59f){
+//                floor = Blocks.cryofluid;
+//            }
+//        });
 
         state.rules.dragMultiplier = 0.7f; //yes, space actually has 0 drag but true 0% drag is very annoying
         state.rules.borderDarkness = true;
