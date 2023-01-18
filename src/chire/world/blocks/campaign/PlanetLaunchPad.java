@@ -1,22 +1,19 @@
 package chire.world.blocks.campaign;
 
 import arc.scene.ui.layout.Table;
-import mindustry.content.SectorPresets;
+import mindustry.content.Planets;
 import mindustry.gen.Icon;
 import mindustry.ui.Styles;
 import mindustry.world.blocks.campaign.LaunchPad;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.net;
 import static mindustry.Vars.state;
-import static mindustry.content.SectorPresets.onset;
 
-public class SunLaunchPad extends LaunchPad {
-//    public CRPlanetDialog CRPD = new CRPlanetDialog();
-    public SunLaunchPad(String name) {
+public class PlanetLaunchPad  extends LaunchPad {
+    public PlanetLaunchPad(String name) {
         super(name);
     }
-
-    public class SunLaunchPadBuild extends LaunchPadBuild {
+    public class PlanetLaunchPadBuild extends LaunchPadBuild {
         @Override
         public void buildConfiguration(Table table){
             if(!state.isCampaign() || net.client()){
@@ -27,11 +24,7 @@ public class SunLaunchPad extends LaunchPad {
             table.button(Icon.upOpen, Styles.cleari, () -> {
 //                state.rules.sector.info.destination = onset.sector;
                 //onset.sector
-                ui.planet.showSelect(onset.sector, other -> {
-                    if(state.isCampaign() && other.planet == state.rules.sector.planet){
-                        state.rules.sector.info.destination = other;
-                    }
-                });
+                state.rules.sector.planet.parent = Planets.serpulo;
                 deselect();
             }).size(40f);
         }

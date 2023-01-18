@@ -2,7 +2,6 @@ package chire.content;
 
 import mindustry.ai.types.BuilderAI;
 import mindustry.content.Fx;
-import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.LaserBoltBulletType;
 import mindustry.gen.Sounds;
 import mindustry.gen.UnitEntity;

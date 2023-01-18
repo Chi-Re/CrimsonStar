@@ -29,7 +29,7 @@ import static mindustry.Vars.state;
 import static mindustry.Vars.world;
 
 public class DesertPlanetGenerator extends PlanetGenerator {
-    public float heightScl = 0.9f, octaves = 8, persistence = 0.7f, heightPow = 3f, heightMult = 1.6f;
+    public float heightScl = 0.4f, octaves = 8, persistence = 0.7f, heightPow = 3f, heightMult = 1.6f;
 
     //TODO inline/remove
     public static float arkThresh = 0.28f, arkScl = 0.83f;
@@ -49,6 +49,10 @@ public class DesertPlanetGenerator extends PlanetGenerator {
     public void addWeather(Sector sector, Rules rules){
         rules.weather.add(new Weather.WeatherEntry(CRWeathers.CRsandstorm));
         rules.fog = true;
+        rules.lighting = true;
+//        rules.ambientLight = Color.valueOf("2D0E0D");
+        rules.solarMultiplier = 0.3f;
+        rules.staticFog = false;
         for(Weather.WeatherEntry entry : rules.weather){
             entry.always = true;
         }

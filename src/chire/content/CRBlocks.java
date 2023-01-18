@@ -6,6 +6,7 @@ import arc.math.Mathf;
 import arc.struct.EnumSet;
 import chire.world.CRColer;
 import chire.world.blocks.campaign.NewAccelerator;
+import chire.world.blocks.campaign.PlanetLaunchPad;
 import chire.world.blocks.campaign.SunLaunchPad;
 import chire.world.blocks.defense.turrets.LastResortTurret;
 import chire.world.blocks.distribution.CoiledDuct;
@@ -47,7 +48,7 @@ public class CRBlocks {
             lastresort, lightSpace, CRpowerSource, CRitemSource,
 
     //斯坦沐
-    coiledduct, desertcore;
+    coiledduct, desertcore, CRPlaunchPad;
     public CRBlocks() {
     }
     public static void loadEnv() {
@@ -130,6 +131,15 @@ public class CRBlocks {
             powerOutput = 2000f;
 
             unitCapModifier = 8;
+        }};
+        //选择行星方块
+        CRPlaunchPad = new PlanetLaunchPad("CR-launch-pad"){{
+            requirements(Category.effect, with(Items.copper, 3));
+            size = 3;
+            itemCapacity = 100;
+            launchTime = 60f * 20;
+            hasPower = false;
+//            consumePower(4f);
         }};
 
 
