@@ -11,6 +11,7 @@ import chire.world.blocks.campaign.SunLaunchPad;
 import chire.world.blocks.defense.turrets.LastResortTurret;
 import chire.world.blocks.distribution.CoiledDuct;
 import chire.world.blocks.special.NewtwoWhit;
+import chire.world.blocks.storage.AsteroidPlanetCoreBlock;
 import chire.world.blocks.storage.DesertCoreBlock;
 import chire.world.blocks.storage.GoodCoreBlock;
 import chire.world.blocks.storage.LimitedCoreBlock;
@@ -48,7 +49,7 @@ public class CRBlocks {
             lastresort, lightSpace, CRpowerSource, CRitemSource,
 
     //斯坦沐
-    coiledduct, desertcore, CRPlaunchPad;
+    coiledduct, desertcore, CRPlaunchPad, asteroidcore;
     public CRBlocks() {
     }
     public static void loadEnv() {
@@ -118,6 +119,21 @@ public class CRBlocks {
             unitCapModifier = 8;
         }};
 
+        asteroidcore = new AsteroidPlanetCoreBlock("asteroid-core"){{
+            requirements(Category.effect, with(Items.copper, 2));
+            alwaysUnlocked = true;
+
+            isFirstTier = true;
+            unitType = UnitTypes.alpha;
+            health = 1100;
+            itemCapacity = 4000;
+            size = 4;
+
+            powerOutput = 2000f;
+
+            unitCapModifier = 8;
+        }};
+
         desertcore = new DesertCoreBlock("desert-core"){{
             requirements(Category.effect, with(Items.copper, 2));
             alwaysUnlocked = true;
@@ -133,7 +149,8 @@ public class CRBlocks {
             unitCapModifier = 8;
         }};
         //选择行星方块
-        CRPlaunchPad = new PlanetLaunchPad("CR-launch-pad"){{
+        //更改卫星围绕的星球,失败,进度无法保存
+        CRPlaunchPad = new PlanetLaunchPad("CRP-launch-pad"){{
             requirements(Category.effect, with(Items.copper, 3));
             size = 3;
             itemCapacity = 100;
@@ -220,6 +237,8 @@ public class CRBlocks {
             requirements(Category.distribution, with(Items.copper, 1));
             health = 90;
             speed = 4f;
+            displayedSpeed = 4.2f;
+            buildCostMultiplier = 2f;
             hasPower = true;
             consumesPower = true;
             conductivePower = true;

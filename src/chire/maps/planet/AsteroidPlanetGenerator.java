@@ -1,60 +1,79 @@
 package chire.maps.planet;
 
-import arc.graphics.Color;
-import arc.math.Mathf;
+import arc.math.Rand;
+import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
-import arc.struct.ObjectMap;
-import arc.util.Tmp;
-import arc.util.noise.Simplex;
+import chire.content.CRBlocks;
+import chire.util.WorldDef;
 import mindustry.content.Blocks;
-import mindustry.maps.planet.SerpuloPlanetGenerator;
+import mindustry.game.Team;
+import mindustry.game.Waves;
+import mindustry.graphics.g3d.PlanetParams;
+import mindustry.maps.generators.BlankPlanetGenerator;
 import mindustry.type.Sector;
 import mindustry.world.Block;
+import mindustry.world.blocks.environment.Floor;
 
-public class AsteroidPlanetGenerator extends SerpuloPlanetGenerator {
-    public float heightScl = 0.9f, octaves = 8, persistence = 0.7f;
+import static mindustry.Vars.state;
+import static mindustry.Vars.world;
 
-    float scl = 5f;
-    Block[][] arr = {
-            {Blocks.carbonStone}
-    };
-    ObjectMap<Block, Block> tars = ObjectMap.of(
-            Blocks.sporeMoss, Blocks.shale,
-            Blocks.moss, Blocks.shale
-    );
+public class AsteroidPlanetGenerator extends BlankPlanetGenerator {
+    public Block core = CRBlocks.asteroidcore;
+    @Override
+    public void generate(){
+        seed = state.rules.sector.planet.id;
+        int sx = width/2, sy = height/2;
+        rand = new Rand(seed);
+
+        Floor background = Blocks.snow.asFloor();
+        Floor ground = Blocks.metalFloor5.asFloor();
+
+        tiles.eachTile(t -> t.setFloor(background));
+
+        WorldDef.getAreaTile(new Vec2(sx, sy), core.size + 6, core.size + 6).forEach(t -> {
+            t.setFloor(ground);
+        });
+
+        pass((x, y) -> {
+            block = Blocks.stoneWall;
+        });
+        pass((x, y) -> {
+            if(noise(x, y, 3, 0.4f, 100f, 1f) > 0.59f){
+                block = Blocks.stoneWall;
+                floor = Blocks.stone;
+            }
+        });
+        pass((x, y) -> {
+            if(noise(x, y, 5, 0.6f, 80f, 1f) > 0.59f){
+                block = Blocks.iceWall;
+                floor = Blocks.ice;
+            }
+        });
+
+        WorldDef.getAreaTile(new Vec2(sx, sy), 10, 10).forEach(t -> {
+            t.setBlock(Blocks.air);
+        });
+
+
+        world.tile(sx + core.size / 2 + 3, sy + core.size / 2 + 3).setBlock(core, Team.sharded);
+
+
+//        state.rules.planetBackground = new PlanetParams(){{
+//            planet = sector.planet;
+//            zoom = 1f;
+//            camPos = new Vec3(1.2388899f, 1.6047299f, /*2.4758825f*/0);
+//        }};
+
+        state.rules.dragMultiplier = 0.7f; //yes, space actually has 0 drag but true 0% drag is very annoying
+        state.rules.borderDarkness = true;
+        state.rules.waves = true;
+
+        state.rules.showSpawns = true;
+        state.rules.spawns = Waves.generate(0.5f, rand, false, true, false);
+    }
 
     @Override
-    public Color getColor(Vec3 position){
-        Block block = getBlock(position);
-
-        //more obvious color
-        if(block == Blocks.crystallineStone) block = Blocks.crystalFloor;
-        //TODO this might be too green
-//        if(block == Blocks.beryllicStone) block = Blocks.arkyicStone;
-
-        return Tmp.c1.set(block.mapColor).a(1f - block.albedo);
-    }
-    float rawHeight(Vec3 position){
-        return Simplex.noise3d(seed, octaves, persistence, 1f/heightScl, 10f + position.x, 10f + position.y, 10f + position.z);
-    }
-    Block getBlock(Vec3 position){
-        float height = rawHeight(position);
-        Tmp.v31.set(position);
-        position = Tmp.v33.set(position).scl(scl);
-        float rad = scl;
-        float temp = Mathf.clamp(Math.abs(position.y * 2f) / (rad));
-        float tnoise = Simplex.noise3d(seed, 7, 0.56, 1f/3f, position.x, position.y + 999f, position.z);
-        temp = Mathf.lerp(temp, tnoise, 0.5f);
-        height *= 1.2f;
-        height = Mathf.clamp(height);
-
-        float tar = Simplex.noise3d(seed, 4, 0.55f, 1f/2f, position.x, position.y + 999f, position.z) * 0.3f + Tmp.v31.dst(0, 0, 1f) * 0.2f;
-
-        Block res = arr[Mathf.clamp((int)(temp * arr.length), 0, arr[0].length - 1)][Mathf.clamp((int)(height * arr[0].length), 0, arr[0].length - 1)];
-        if(tar > 0.5f){
-            return tars.get(res, res);
-        }else{
-            return res;
-        }
+    public int getSectorSize(Sector sector){
+        return 800;
     }
 }

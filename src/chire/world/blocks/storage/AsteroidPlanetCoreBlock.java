@@ -3,7 +3,6 @@ package chire.world.blocks.storage;
 import arc.Core;
 import arc.util.Strings;
 import mindustry.Vars;
-import mindustry.gen.Player;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
 import mindustry.world.Tile;
@@ -11,13 +10,13 @@ import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
-public class DesertCoreBlock extends CoreBlock {
+public class AsteroidPlanetCoreBlock extends CoreBlock {
     public float powerOutput;
-    public DesertCoreBlock(String name) {
+    public AsteroidPlanetCoreBlock(String name) {
         super(name);
-            outputsPower = true;
-            consumesPower = false;
-            hasPower = true;
+        outputsPower = true;
+        consumesPower = false;
+        hasPower = true;
     }
 
     @Override
@@ -28,20 +27,20 @@ public class DesertCoreBlock extends CoreBlock {
     @Override
     public void setStats(){
         super.setStats();
-            stats.add(Stat.basePowerGeneration, 2500, StatUnit.powerSecond);
+        stats.add(Stat.basePowerGeneration, 2500, StatUnit.powerSecond);
     }
 
     @Override
     public void setBars() {
         super.setBars();
-            addBar("power", (CoreBuild e) -> new Bar(
-                    () -> Core.bundle.format("bar.poweroutput", Strings.fixed(e.getPowerProduction() * 60, 1)),
-                    () -> Pal.powerBar,
-                    () -> 1
-            ));
+        addBar("power", (CoreBuild e) -> new Bar(
+                () -> Core.bundle.format("bar.poweroutput", Strings.fixed(e.getPowerProduction() * 60, 1)),
+                () -> Pal.powerBar,
+                () -> 1
+        ));
     }
 
-    public class DesertCoreBuild extends CoreBuild {
+    public class AsteroidPlanetBuild extends CoreBuild {
         public float getPowerProduction(){
             return powerOutput / 60f;
         }

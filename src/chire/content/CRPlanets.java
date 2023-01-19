@@ -6,8 +6,10 @@ import arc.math.geom.Mat3D;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import arc.struct.Seq;
+import arc.util.Log;
 import arc.util.Tmp;
 import chire.maps.planet.*;
+import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Items;
 import mindustry.content.Planets;
@@ -21,9 +23,11 @@ import mindustry.type.Sector;
 import mindustry.world.meta.Attribute;
 import mindustry.world.meta.Env;
 
+import static mindustry.Vars.state;
+
 public class CRPlanets {
-    public static Planet blackhole, Asteroid,
-            desertplanet,spacestation,
+    public static Planet blackhole,
+            desertplanet, Asteroid,
             CRV;
     public static void load(){
 //        Planet sun = Planets.sun;
@@ -68,26 +72,27 @@ public class CRPlanets {
 
             unlockedOnLand.add(CRBlocks.desertcore);
         }};
-        //空间站
-        spacestation = new Planet("space-station", desertplanet, 1f){{
-            generator = new SpaceStationGenerator();
+//        Log.info(Vars.state.rules.sector.planet.parent);
+        //空间站spacestation(放弃改为小行星)
+        Asteroid = new Planet("asteroid", desertplanet, 1f){{
+            generator = new AsteroidPlanetGenerator();
             alwaysUnlocked = true;
             tidalLock = false;
             clearSectorOnLose = true;
             hasAtmosphere = false;
             updateLighting = false;
             accessible = true;
-            orbitRadius = 1.5f;
+            orbitRadius = 6;
             sectors.add(new Sector(this, PlanetGrid.Ptile.empty));
             defaultEnv = Env.space;
             meshLoader = () -> {
                 iconColor = Blocks.snow.mapColor;
-                Color tinted = Blocks.snow.mapColor.cpy().a(1f - Blocks.snow.mapColor.a);
+                Color tinted = Blocks.iceSnow.mapColor.cpy().a(1f - Blocks.iceSnow.mapColor.a);
                 Seq<GenericMesh> meshes = new Seq<>();
-                Color color = Blocks.snow.mapColor;
+                Color color = Blocks.stoneWall.mapColor;
                 Rand rand = new Rand(id + 2);
                 meshes.add(new NoiseMesh(
-                        this, 0, 2, 0.01f, 2, 0.55f, 0.45f, 5f,
+                        this, 0, 2, 0.1f, 2, 0.55f, 0.45f, 2f,
                         color, tinted, 3, 0.6f, 0.38f, 0.5f
                 ));
                 return new MultiMesh(meshes.toArray(GenericMesh.class));
@@ -163,45 +168,6 @@ public class CRPlanets {
 //            unlockedOnLand.add(DTBlocks.corePedestal);
         }};
 
-        Asteroid = new Planet("Asteroid-s", Planets.serpulo, 0.3f, 3){{
-            generator = new AsteroidPlanetGenerator();
-            meshLoader = () -> new HexMesh(this, 6);
-//            cloudMeshLoader = () -> new MultiMesh(
-//                    new HexSkyMesh(this, 11, 0.15f, 0.13f, 5, new Color().set(Pal.spore).mul(0.9f).a(0.75f), 2, 0.45f, 0.9f, 0.38f),
-//                    new HexSkyMesh(this, 1, 0.6f, 0.16f, 5, Color.white.cpy().lerp(Pal.spore, 0.55f).a(0.75f), 2, 0.45f, 1f, 0.41f)
-//            );
-
-            launchCapacityMultiplier = 0.5f;
-            sectorSeed = 2;
-            startSector = 17;
-            orbitRadius = 6;
-            orbitTime = 12 * 2;
-            allowWaves = true;
-            allowWaveSimulation = true;
-            allowSectorInvasion = true;
-            allowLaunchSchematics = true;
-            enemyCoreSpawnReplace = true;
-            allowLaunchLoadout = true;
-            //doesn't play well with configs
-            prebuildBase = false;
-            hasAtmosphere = true;
-            ruleSetter = r -> {
-                r.waveTeam = Team.crux;
-                r.placeRangeCheck = false;
-                r.attributes.clear();
-                r.showSpawns = false;
-            };
-            iconColor = Color.valueOf("daf5ff");
-            atmosphereColor = Color.valueOf("ffffff");
-            atmosphereRadIn = 0.02f;
-            atmosphereRadOut = 0.3f;
-            startSector = 15;
-            alwaysUnlocked = false;
-            accessible =false;
-            visible = false;
-            landCloudColor = Pal.spore.cpy().a(0.5f);
-            hiddenItems.addAll(Items.erekirItems).removeAll(Items.serpuloItems);
-        }};
 
 //        chire = new Planet("chire", Planets.serpulo, 2f){{
 //            bloom = true;

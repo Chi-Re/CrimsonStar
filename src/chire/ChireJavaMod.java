@@ -4,13 +4,16 @@ import arc.*;
 import arc.scene.ui.layout.Table;
 import arc.util.*;
 import chire.content.*;
-import chire.graphics.CREnvRenderers;
+import chire.util.CRUtil;
 import mindustry.Vars;
 import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
 import mindustry.mod.*;
 import mindustry.ui.MobileButton;
 import mindustry.ui.dialogs.*;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 //这里我测试中文是否可以正常支持,InitiateUI
 //Provides integration with GitHub.
@@ -91,5 +94,6 @@ public class ChireJavaMod extends Mod{
         CRTechTree.load();
         CRUnitTypes.load();
         CRWeathers.load();
+//        CRUtil.main();
     }
 }
