@@ -10,15 +10,14 @@ import chire.world.blocks.campaign.PlanetLaunchPad;
 import chire.world.blocks.campaign.SunLaunchPad;
 import chire.world.blocks.defense.turrets.LastResortTurret;
 import chire.world.blocks.distribution.CoiledDuct;
+import chire.world.blocks.production.DiggingWall;
 import chire.world.blocks.special.NewtwoWhit;
 import chire.world.blocks.storage.AsteroidPlanetCoreBlock;
 import chire.world.blocks.storage.DesertCoreBlock;
 import chire.world.blocks.storage.GoodCoreBlock;
 import chire.world.blocks.storage.LimitedCoreBlock;
-import mindustry.content.Fx;
-import mindustry.content.Items;
-import mindustry.content.Liquids;
-import mindustry.content.UnitTypes;
+import chire.world.draw.DrawLaser;
+import mindustry.content.*;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.bullet.PointBulletType;
@@ -35,9 +34,17 @@ import mindustry.world.blocks.defense.Door;
 import mindustry.world.blocks.distribution.Duct;
 import mindustry.world.blocks.environment.EmptyFloor;
 import mindustry.world.blocks.environment.Floor;
+import mindustry.world.blocks.environment.StaticWall;
 import mindustry.world.blocks.production.GenericCrafter;
+import mindustry.world.blocks.production.Separator;
+import mindustry.world.blocks.production.WallCrafter;
 import mindustry.world.blocks.sandbox.ItemSource;
 import mindustry.world.blocks.sandbox.PowerSource;
+import mindustry.world.draw.DrawDefault;
+import mindustry.world.draw.DrawLiquidTile;
+import mindustry.world.draw.DrawMulti;
+import mindustry.world.draw.DrawRegion;
+import mindustry.world.meta.Attribute;
 import mindustry.world.meta.BlockFlag;
 import mindustry.world.meta.BuildVisibility;
 
@@ -48,8 +55,10 @@ public class CRBlocks {
     public static Block WhatWall, ModelCcore, oilRefiner, CRlaunchPad, CRinterplanetaryAccelerator, chireduo, limitedcore,
             lastresort, lightSpace, CRpowerSource, CRitemSource,
 
-    //斯坦沐
-    coiledduct, desertcore, CRPlaunchPad, asteroidcore;
+    //斯坦沐星球方块
+    coiledduct, desertcore, CRPlaunchPad, asteroidcore, CRBseparator
+        //环境
+        ;
     public CRBlocks() {
     }
     public static void loadEnv() {
@@ -158,6 +167,35 @@ public class CRBlocks {
             hasPower = false;
 //            consumePower(4f);
         }};
+        //DiggingWall
+        CRBseparator = new DiggingWall("CR-B-separator"){{
+            requirements(Category.production, with(Items.copper, 1));
+            results = with(
+                    Items.copper, 5,
+                    Items.lead, 3,
+                    Items.graphite, 2,
+                    Items.titanium, 2
+            );
+            hasPower = true;
+            hasLiquids = false;
+            craftTime = 35f;
+            size = 2;
+
+            consumePower(1.1f);
+        }};
+//        Crusher = new WallCrafter("CR-crusher"){{
+//            requirements(Category.production, with(Items.copper, 1));
+//            consumePower(1);
+//
+//            drillTime = 110f;
+//            size = 2;
+//            attribute = Attribute.sand;
+//            output = Items.sand;
+//            fogRadius = 2;
+//            researchCost = with(Items.copper, 1);
+//            ambientSound = Sounds.drill;
+//            ambientSoundVolume = 0.04f;
+//        }};
 
 
         CRlaunchPad = new SunLaunchPad("CR-launch-pad"){{
@@ -237,7 +275,7 @@ public class CRBlocks {
             requirements(Category.distribution, with(Items.copper, 1));
             health = 90;
             speed = 4f;
-            displayedSpeed = 4.2f;
+//            displayedSpeed = 4.2f;
             buildCostMultiplier = 2f;
             hasPower = true;
             consumesPower = true;

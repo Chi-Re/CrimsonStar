@@ -1,34 +1,40 @@
 package chire.world.blocks.distribution;
 
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.util.Eachable;
 import chire.content.CRBlocks;
 import mindustry.content.Blocks;
+import mindustry.entities.units.BuildPlan;
 import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Conveyor;
+import mindustry.world.blocks.distribution.Duct;
 
-public class CoiledDuct extends Conveyor {
+public class CoiledDuct extends Duct {
     public CoiledDuct(String name) {
         super(name);
         hasPower = true;
         consumesPower = true;
         conductivePower = true;
-        consumePower(0.30f);
+        consumePower(0.1f);
     }
 
-    @Override
-    public boolean canPlaceOn(Tile tile, Team team, int rotation){
-        for (int i = 0; i < 4; i++) {
-            Tile other = tile.nearby(i);
-            if (other != null && other.block().id == id){
-                return true;
-            }
-            if (other != null && other.block().id == CRBlocks.desertcore.id){
-                return true;
-            }
-        }
-        return false;
-    }
+    //是的,管道本来是需要连接核心的,但这很离谱且没意思
+//    @Override
+//    public boolean canPlaceOn(Tile tile, Team team, int rotation){
+//        for (int i = 0; i < 4; i++) {
+//            Tile other = tile.nearby(i);
+//            if (other != null && other.block().id == id){
+//                return true;
+//            }
+//            if (other != null && other.block().id == CRBlocks.desertcore.id){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
 //    public class CoiledDuctBuild extends ConveyorBuild{
 //        @Override
