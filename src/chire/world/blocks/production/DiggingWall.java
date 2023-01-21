@@ -29,7 +29,7 @@ public class DiggingWall extends Separator{
     public DiggingWall(String name) {
         super(name);
         rotate = true;
-        blocks = new Block[]{Blocks.stoneWall};
+        blocks = new Block[]{Blocks.stoneWall, Blocks.duo, Blocks.coreShard};
     }
 
     @Override
@@ -67,12 +67,52 @@ public class DiggingWall extends Separator{
                         if (other != null && other.solid()) {
                             if (other.block() == block) {
                                 float width = (0.65f + Mathf.absin(Time.time + i*5 + (id % 9)*9, 3f, 0.07f)) * warmup;
-                                if (other.worldx() > x){
+                                if (rotation == 0){
                                     lx = x + 2;
                                     ly = y;
                                     lsx = other.worldx();
                                     lsy = y;
                                 }
+                                else if (rotation == 2){
+                                    lx = x - 2;
+                                    ly = y;
+                                    lsx = other.worldx();
+                                    lsy = y;
+                                }
+                                else if (rotation == 1){
+                                    lx = x;
+                                    ly = y + 2;
+                                    lsx = x;
+                                    lsy = other.worldy();
+                                }
+                                else if (rotation == 3){
+                                    lx = x;
+                                    ly = y - 2;
+                                    lsx = x;
+                                    lsy = other.worldy();
+                                }
+//                                switch (rotation) {
+//                                    case 0:
+//                                        lx = x + 2;
+//                                        ly = y;
+//                                        lsx = other.worldx();
+//                                        lsy = y;
+//                                    case 1:
+//                                        lx = x;
+//                                        ly = y + 2;
+//                                        lsx = x;
+//                                        lsy = other.worldy();
+//                                    case 2:
+//                                        lx = x - 2;
+//                                        ly = y;
+//                                        lsx = other.worldx();
+//                                        lsy = y;
+//                                    case 3:
+//                                        lx = x;
+//                                        ly = y - 2;
+//                                        lsx = x;
+//                                        lsy = other.worldy();
+//                                }
                                 Draw.z(Layer.power - 1);
                                 Draw.mixcol(Color.white, Mathf.absin(Time.time + i*5 + id*9, 3f, 0.07f));
                                 Drawf.laser(
@@ -81,6 +121,7 @@ public class DiggingWall extends Separator{
                                         lsx, lsy,
                                         lx, ly,
                                         width);
+                                Vars.ui.showLabel(String.valueOf(rotation), 0.015f, this.x, this.y);
                             }
                             break;
                         }
