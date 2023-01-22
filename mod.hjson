@@ -1,23 +1,8 @@
-#the mod name as displayed in-game
 displayName: "炽工业"
-
-#the internal name of your mod
 name: "blazindustry"
-
-#your name
 author: "炽热S"
-
-#the fully qualified main class of the mod
 main: "chire.ChireJavaMod"
-
-#the mod description as seen in the mod dialog
-description: "我的一个java模组,后面大概率用来整活"
-
-#the mod version
+description: "我的一个java模组,现在正在在玩法上的制作,可能会用很长很长时间\n我的模组群:587237182"
 version: 1.0.0
-
-#the minimum game build required to run this mod
 minGameVersion: 136
-
-#this is a java mod
 java: true

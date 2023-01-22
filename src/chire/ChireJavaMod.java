@@ -40,7 +40,7 @@ public class ChireJavaMod extends Mod{
                 //dialog.cont.add("behold").row();
                 //mod sprites are prefixed with the mod name (this mod is called 'example-java-mod' in its config)
                 dialog.cont.image(Core.atlas.find("blazindustry-icon")).size(250f, 250f).pad(20f).row();
-                dialog.cont.add("我的一个java模组,后面大概率用来整活\n大部分都还在测试,剧情已经写好了\n弹窗可以在设置里关闭\n\n嗯,没什么可说的了\n偷偷的说:我才不会更新UI界面,这个很麻烦而且没有用").row();
+                dialog.cont.add("我的一个java模组,现在正在在玩法上的制作,可能会用很长很长时间\n大部分都还在测试,剧情已经写好了\n我的模组群:587237182\n弹窗可以在设置里关闭\n\n嗯,没什么可说的了\n偷偷的说:我才不会更新UI界面,这个很麻烦而且没有用").row();
                 dialog.cont.button("更新日志", () -> {
                     var dialog2 = new BaseDialog("更新日志");
                     dialog2.cont.add("没更新呢,剧情已经写好了\n测试测试").row();

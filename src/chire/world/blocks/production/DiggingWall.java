@@ -7,25 +7,33 @@ import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.util.Time;
 import arc.util.Tmp;
+import arc.util.io.Writes;
 import chire.world.blocks.laser.LaserBlock;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
+import mindustry.entities.Effect;
 import mindustry.game.Team;
 import mindustry.gen.Building;
+import mindustry.gen.LaunchPayload;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
+import mindustry.type.Item;
+import mindustry.type.ItemStack;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.production.Separator;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
+import static mindustry.Vars.*;
 
 public class DiggingWall extends Separator{
     public double range = 3;
-    public Block[] blocks;
+    public Block[] blocks = {};
+    public Item[] output = {};
 
+    //输出
     public DiggingWall(String name) {
         super(name);
         rotate = true;
@@ -55,9 +63,10 @@ public class DiggingWall extends Separator{
 
     public class DiggingWallBuild extends SeparatorBuild {
         public float lx = x, ly = y, lsx = x, lsy = y;
+        public float launchCounter;
         @Override
         public void draw(){
-            drawer.draw(this);;
+            drawer.draw(this);
 
             for (Block block : blocks) {
                 for (int i = 0; i < size; i++) {
@@ -122,6 +131,11 @@ public class DiggingWall extends Separator{
                                         lx, ly,
                                         width);
                                 Vars.ui.showLabel(String.valueOf(rotation), 0.015f, this.x, this.y);
+
+                                //TODO 加点火花?之后再试
+                                //Draw.color();
+                                //Draw.mixcol();
+                                //Draw.z(Layer.effect);
                             }
                             break;
                         }
