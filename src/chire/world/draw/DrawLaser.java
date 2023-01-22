@@ -33,8 +33,8 @@ public class DrawLaser extends DrawBlock {
     }
     @Override
     public void load(Block block){
-        laser = atlas.find("blazindustry-drill-laser");
-        laserEnd = atlas.find("blazindustry-drill-laser-end");
+        laser = atlas.find("crimson-star-drill-laser");
+        laserEnd = atlas.find("crimson-star-drill-laser-end");
         arrowRegion = atlas.find(block.name + "-arrow");
     }
 }

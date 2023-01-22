@@ -36,14 +36,14 @@ public class ChireJavaMod extends Mod{
         Events.on(ClientLoadEvent.class, e -> {
             //show dialog upon startup
             Time.runTask(10f, () -> {
-                BaseDialog dialog = new BaseDialog("炽工业");
+                BaseDialog dialog = new BaseDialog("绯红星海");
                 //dialog.cont.add("behold").row();
                 //mod sprites are prefixed with the mod name (this mod is called 'example-java-mod' in its config)
-                dialog.cont.image(Core.atlas.find("blazindustry-icon")).size(250f, 250f).pad(20f).row();
+                dialog.cont.image(Core.atlas.find("crimson-star-icon")).size(250f, 250f).pad(20f).row();
                 dialog.cont.add("我的一个java模组,现在正在在玩法上的制作,可能会用很长很长时间\n大部分都还在测试,剧情已经写好了\n我的模组群:587237182\n弹窗可以在设置里关闭\n\n嗯,没什么可说的了\n偷偷的说:我才不会更新UI界面,这个很麻烦而且没有用").row();
                 dialog.cont.button("更新日志", () -> {
                     var dialog2 = new BaseDialog("更新日志");
-                    dialog2.cont.add("没更新呢,剧情已经写好了\n测试测试").row();
+                    dialog2.cont.add("0.0.2\n模组改名为绯红星海(炽工业)\n\n0.0.1\n没更新呢,剧情已经写好了\n测试测试").row();
                     dialog2.buttons.defaults().size(210, 64);
                     dialog2.addCloseButton();
                     dialog2.show();
@@ -68,13 +68,13 @@ public class ChireJavaMod extends Mod{
                 //MenuFragment menufrag = new MenuFragment();
                 //MenuFragment.addButton("!!!!", Icon.exit, () -> Core.app.exit());
 
-                Vars.ui.settings.game.checkPref("炽工业弹窗", Core.settings.getBool("炽工业弹窗"));
+                Vars.ui.settings.game.checkPref("绯红星海弹窗", Core.settings.getBool("炽工业弹窗"));
                 Vars.ui.hudGroup.fill(t -> {
-                    t.visibility = (() -> Core.settings.getBool("炽工业弹窗"));
+                    t.visibility = (() -> Core.settings.getBool("绯红星海弹窗"));
                     t.top().left().add(table);
                     //t.addListener(new InputListener());
 			    });
-                if (Core.settings.getBool("炽工业弹窗")){
+                if (Core.settings.getBool("绯红星海弹窗")){
                     dialog.show();
                 }
                 dialog.addCloseButton();

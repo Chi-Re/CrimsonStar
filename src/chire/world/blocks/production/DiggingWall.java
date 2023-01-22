@@ -125,8 +125,8 @@ public class DiggingWall extends Separator{
                                 Draw.z(Layer.power - 1);
                                 Draw.mixcol(Color.white, Mathf.absin(Time.time + i*5 + id*9, 3f, 0.07f));
                                 Drawf.laser(
-                                        Core.atlas.find("blazindustry-point-laser"),
-                                        Core.atlas.find("blazindustry-point-laser-end"),
+                                        Core.atlas.find("crimson-star-point-laser"),
+                                        Core.atlas.find("crimson-star-point-laser-end"),
                                         lsx, lsy,
                                         lx, ly,
                                         width);

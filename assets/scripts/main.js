@@ -1,7 +1,7 @@
-MapResizeDialog.minSize = 0
-MapResizeDialog.maxSize = 5000
+//MapResizeDialog.minSize = 0
+//MapResizeDialog.maxSize = 5000
 require('星球/月球');
-require('星球/斯图尔特');
+//require('星球/斯图尔特');
 //require('星球/过去');
 //require('keji')
 //require('辅助/核心资源显示');

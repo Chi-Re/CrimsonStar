@@ -75,7 +75,7 @@ public class Function {
             Cell<Image> cell = table.image(icon).pad(3);
             if (size > 0) cell.size(size);
             table.add(text).color(color == null ? Color.white : color).wrap().width(280f).get().setAlignment(Align.center, Align.center);
-            table.image(Core.atlas.find("blazindustry-icon")).size(64).row();
+            table.image(Core.atlas.find("crimson-star-icon")).size(64).row();
             table.pack();
             Table container = Core.scene.table();
             container.top().add(table);
