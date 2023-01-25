@@ -27,6 +27,7 @@ import mindustry.entities.effect.WaveEffect;
 import mindustry.entities.pattern.ShootAlternate;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
+import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.world.Block;
 import mindustry.world.blocks.campaign.LaunchPad;
@@ -168,13 +169,16 @@ public class CRBlocks {
 //            consumePower(4f);
         }};
         //DiggingWall
+//        CRBseparator = new DiggingWall("CR-B-separator"){{
+//            requirements(Category.production, with(Items.copper, 1));
+//        }};
         CRBseparator = new DiggingWall("CR-B-separator"){{
             requirements(Category.production, with(Items.copper, 1));
+            blocks = new Block[]{Blocks.stoneWall, Blocks.iceWall};
+            blocksTime = new float[]{1, 10};
             results = with(
-                    Items.copper, 5,
-                    Items.lead, 3,
-                    Items.graphite, 2,
-                    Items.titanium, 2
+                    Items.copper, 4, Items.lead, 3, Items.graphite, 1, Items.titanium, 1,
+                    CRItems.iceresidue, 3, Items.sand, 5
             );
             hasPower = true;
             hasLiquids = false;

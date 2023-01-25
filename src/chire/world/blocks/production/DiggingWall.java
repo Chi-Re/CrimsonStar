@@ -7,38 +7,46 @@ import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.util.Time;
 import arc.util.Tmp;
-import arc.util.io.Writes;
-import chire.world.blocks.laser.LaserBlock;
 import mindustry.Vars;
 import mindustry.content.Blocks;
-import mindustry.content.Fx;
-import mindustry.entities.Effect;
 import mindustry.game.Team;
-import mindustry.gen.Building;
-import mindustry.gen.LaunchPayload;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.world.Block;
 import mindustry.world.Tile;
+import mindustry.world.blocks.distribution.StackConveyor;
 import mindustry.world.blocks.production.Separator;
-import mindustry.world.meta.Stat;
-import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.world;
 
+//TODO 失败,需要重新制作,数据污染
 public class DiggingWall extends Separator{
     public double range = 3;
-    public Block[] blocks = {};
-    public Item[] output = {};
+    public Block[] blocks;
+    public float[] blocksTime;
+
 
     //输出
     public DiggingWall(String name) {
         super(name);
         rotate = true;
-        blocks = new Block[]{Blocks.stoneWall, Blocks.duo, Blocks.coreShard};
+        sync = true;
+//        //TODO 物品初始化,否则会返回null
+//         with(Items.copper, 1);
     }
+
+    //TODO 放弃,数据区块化导致玩法异常
+//    @Override
+//    public void setBars(){
+//        super.setBars();
+//        addBar("items", entity -> new Bar(
+//                () -> Core.bundle.format("bar.progress", (CRprogress / progressTime)*100),
+//                () -> Pal.items,
+//                () -> CRprogress / progressTime)
+//        );
+//    }
 
     @Override
     public boolean canPlaceOn(Tile tile, Team team, int rotation){
@@ -63,7 +71,66 @@ public class DiggingWall extends Separator{
 
     public class DiggingWallBuild extends SeparatorBuild {
         public float lx = x, ly = y, lsx = x, lsy = y;
-        public float launchCounter;
+        public float progressTime = 60;
+        public float CRprogress = 0;
+
+        @Override
+        public void updateTile(){
+            Vars.ui.showLabel("进度:" + (int) ((CRprogress / progressTime) * 100) + "%", 0.015f, this.x, this.y);
+
+            totalProgress += warmup * delta();
+
+            if(efficiency > 0){
+                progress += getProgressIncrease(craftTime);
+                warmup = Mathf.lerpDelta(warmup, 1f, 0.02f);
+            }else{
+                warmup = Mathf.lerpDelta(warmup, 0f, 0.02f);
+            }
+
+            if(progress >= 1f){
+                progress %= 1f;
+                int sum = 0;
+                for(ItemStack stack : results) sum += stack.amount;
+
+                int i = Mathf.randomSeed(seed++, 0, sum - 1);
+                int count = 0;
+                Item item = null;
+
+                //guaranteed desync since items are random - won't be fixed and probably isn't too important
+                for(ItemStack stack : results){
+                    if(i >= count && i < count + stack.amount){
+                        item = stack.item;
+                        break;
+                    }
+                    count += stack.amount;
+                }
+
+                consume();
+
+                if(item != null && items.get(item) < itemCapacity){
+                    for (Block block : blocks) {
+                        for (int ii = 0; ii < size; ii++) {
+                            nearbySide(tile.x, tile.y, rotation, ii, Tmp.p1);
+                            for (int j = 0; j < range; j++) {
+                                Tile other = world.tile(Tmp.p1.x + Geometry.d4x(rotation) * j, Tmp.p1.y + Geometry.d4y(rotation) * j);
+                                if (other != null && other.solid()) {
+                                    if (other.block() == block) {
+                                        CRprogress(other, other.block());
+                                        offload(item);
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(timer(timerDump, dumpTime)){
+                dump();
+            }
+        }
+
         @Override
         public void draw(){
             drawer.draw(this);
@@ -100,28 +167,6 @@ public class DiggingWall extends Separator{
                                     lsx = x;
                                     lsy = other.worldy();
                                 }
-//                                switch (rotation) {
-//                                    case 0:
-//                                        lx = x + 2;
-//                                        ly = y;
-//                                        lsx = other.worldx();
-//                                        lsy = y;
-//                                    case 1:
-//                                        lx = x;
-//                                        ly = y + 2;
-//                                        lsx = x;
-//                                        lsy = other.worldy();
-//                                    case 2:
-//                                        lx = x - 2;
-//                                        ly = y;
-//                                        lsx = other.worldx();
-//                                        lsy = y;
-//                                    case 3:
-//                                        lx = x;
-//                                        ly = y - 2;
-//                                        lsx = x;
-//                                        lsy = other.worldy();
-//                                }
                                 Draw.z(Layer.power - 1);
                                 Draw.mixcol(Color.white, Mathf.absin(Time.time + i*5 + id*9, 3f, 0.07f));
                                 Drawf.laser(
@@ -130,7 +175,6 @@ public class DiggingWall extends Separator{
                                         lsx, lsy,
                                         lx, ly,
                                         width);
-                                Vars.ui.showLabel(String.valueOf(rotation), 0.015f, this.x, this.y);
 
                                 //TODO 加点火花?之后再试
                                 //Draw.color();
@@ -141,6 +185,17 @@ public class DiggingWall extends Separator{
                         }
                     }
                 }
+            }
+        }
+        public void CRprogress(Tile tile, Block block) {
+            for (int s=0; s<blocks.length; s++) {
+                if (blocks[s] == block) {
+                    CRprogress += blocksTime[s];
+                }
+            }
+            if (CRprogress >= progressTime) {
+                tile.setBlock(Blocks.air);
+                CRprogress = 0;
             }
         }
     }
