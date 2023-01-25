@@ -1,5 +1,6 @@
 package chire.content;
 
+import arc.files.Fi;
 import arc.graphics.Color;
 import arc.math.Rand;
 import arc.math.geom.Mat3D;
@@ -23,13 +24,16 @@ import mindustry.type.Sector;
 import mindustry.world.meta.Attribute;
 import mindustry.world.meta.Env;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
 import static mindustry.Vars.state;
 
 public class CRPlanets {
     public static Planet blackhole,
             desertplanet, Asteroid,
             CRV;
-    public static void load(){
+    public static void load() {
 //        Planet sun = Planets.sun;
 //        sun.alwaysUnlocked = true;
 //        sun.hasAtmosphere = false;
@@ -40,7 +44,7 @@ public class CRPlanets {
 //        sun.generator = new SunPlanetGenerator();
 
         //沙漠星球
-        desertplanet = new Planet("desert-planet", Planets.sun, 1f, 2){{
+        desertplanet = new Planet("desert-planet", Planets.sun, 1f, 2) {{
             generator = new DesertPlanetGenerator();
             meshLoader = () -> new HexMesh(this, 5);
             cloudMeshLoader = () -> new MultiMesh(
@@ -72,9 +76,37 @@ public class CRPlanets {
 
             unlockedOnLand.add(CRBlocks.desertcore);
         }};
+
+        Planet datajson;
+
+//        File serpulofile = new File(Vars.modDirectory  + "/settings/planets/serpulo.json");
+//        if (serpulofile.exists()){
+//            datajson = Planets.serpulo;
+//        }
+//        File desertplanetfile = new File(Vars.modDirectory  + "/settings/planets/desertplanet.json");
+//        if (desertplanetfile.exists()){
+//            datajson = Planets.serpulo;
+//        }
+
+
 //        Log.info(Vars.state.rules.sector.planet.parent);
+
+        //TODO 判断星球,之后将更改为更方便的
+        Planet parent;
+        Fi planetsfile = new Fi(Vars.modDirectory + "/settings/planets");
+        if (!planetsfile.exists()) {
+            planetsfile.mkdirs();
+        }
+
+        File serpulofile = new File(Vars.modDirectory + "/settings/planets/serpulo.stt");
+        if (serpulofile.exists()) {
+            parent = Planets.serpulo;
+        } else {
+            parent = desertplanet;
+        }
+
         //空间站spacestation(放弃改为小行星)
-        Asteroid = new Planet("asteroid", desertplanet, 1f){{
+        Asteroid = new Planet("asteroid", parent, 1f) {{
             generator = new AsteroidPlanetGenerator();
             alwaysUnlocked = true;
             tidalLock = false;
@@ -100,12 +132,10 @@ public class CRPlanets {
         }};
 
 
-
-
         //星环
         // by:你在干什么
         //由我进行移植,但不完善,
-        CRV = new Planet("星环", Planets.sun, 1f){{
+        CRV = new Planet("星环", Planets.sun, 1f) {{
             localizedName = "星环";
             orbitRadius = 0;
             hasAtmosphere = false;
@@ -136,8 +166,7 @@ public class CRPlanets {
         //卫星(no)
 
 
-
-        blackhole = new Planet("Black-Hole", null, 1f, 2){{
+        blackhole = new Planet("Black-Hole", null, 1f, 2) {{
             generator = new BlackHolePlanetGenerator();
             meshLoader = () -> new HexMesh(this, 5);
             alwaysUnlocked = true;

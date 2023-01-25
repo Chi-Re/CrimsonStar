@@ -4,8 +4,12 @@ package chire.util;
 //import com.alibaba.fastjson.JSONArray;
 //import com.alibaba.fastjson.JSONObject;
 //import mindustry.Vars;
+import mindustry.Vars;
 import mindustry.world.Block;
 import mindustry.world.blocks.defense.turrets.Turret;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 //import java.io.*;
 //import java.nio.charset.StandardCharsets;
@@ -27,17 +31,9 @@ public class CRUtil {
 
     /**
      * @author 炽热S
-     * 没错我为了图方便写的,很好用,但不稳定(注意)
      */
-    public static String settings(String modversion, String SpaceStation) {
-        String datajson = """
-                {
-                "模组版本": {模组版本},
-                "SpaceStation": {SpaceStation}
-                }
-                """;
-        return datajson.replace("{模组版本}", modversion)
-                .replace("{SpaceStation}", SpaceStation);
+    public static File SFile(String str) {
+        return new File(Vars.modDirectory + "/settings/" + str);
     }
 
 //    public static String readJsonFile(String fileName) {

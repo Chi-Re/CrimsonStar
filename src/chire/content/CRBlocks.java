@@ -158,7 +158,7 @@ public class CRBlocks {
             unitCapModifier = 8;
         }};
         //选择行星方块
-        //更改卫星围绕的星球,失败,进度无法保存
+        //TODO 动画制作未完成
         CRPlaunchPad = new PlanetLaunchPad("CRP-launch-pad"){{
             requirements(Category.effect, with(Items.copper, 3));
             size = 3;

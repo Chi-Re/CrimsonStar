@@ -1,6 +1,7 @@
 package chire;
 
 import arc.*;
+import arc.files.Fi;
 import arc.scene.ui.layout.Table;
 import arc.util.*;
 import chire.content.*;
