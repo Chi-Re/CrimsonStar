@@ -91,5 +91,9 @@ public class LimitedCoreBlock extends CoreBlock {
                 Lines.arc(this.x, this.y, 16, time * (6 / num) / 360, 90);
             }
         }
+        @Override
+        public boolean canPickup(){
+            return true;
+        }
     }
 }

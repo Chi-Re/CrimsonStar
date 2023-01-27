@@ -9,12 +9,17 @@ import arc.math.geom.Vec3;
 import arc.util.Tmp;
 import arc.util.noise.Ridged;
 import arc.util.noise.Simplex;
+import chire.content.CRBlocks;
+import chire.content.CRStatusEffects;
 import chire.content.CRWeathers;
 import mindustry.ai.Astar;
 import mindustry.content.Blocks;
 import mindustry.content.Loadouts;
+import mindustry.content.UnitTypes;
+import mindustry.entities.Units;
 import mindustry.game.Rules;
 import mindustry.game.Schematics;
+import mindustry.gen.Unit;
 import mindustry.maps.generators.PlanetGenerator;
 import mindustry.type.Sector;
 import mindustry.type.Weather;
@@ -56,7 +61,19 @@ public class DesertPlanetGenerator extends PlanetGenerator {
         rules.staticFog = false;
         rules.ghostBlocks = false;
 
-        rules.bannedBlocks.add(Blocks.copperWall);
+        UnitTypes.alpha.immunities.add(CRStatusEffects.CRcorroded);
+
+        Block[] bannedBlockss = new Block[]{
+                //原版
+                Blocks.waterExtractor, Blocks.cultivator, Blocks.rotaryPump, Blocks.navalFactory,
+                Blocks.mechanicalPump, Blocks.impulsePump, Blocks.sporePress, Blocks.mender,
+                Blocks.mendProjector,
+                //模组
+                CRBlocks.asteroidcore, CRBlocks.limitedcore
+        };
+        for (Block blockss : bannedBlockss) {
+            rules.bannedBlocks.add(blockss);
+        }
         rules.hideBannedBlocks = true;
 
         for(Weather.WeatherEntry entry : rules.weather){
