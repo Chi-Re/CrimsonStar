@@ -89,11 +89,13 @@ public class ChireJavaMod extends Mod{
     @Override
     public void loadContent(){
         Log.info("Loading some example example.content.");
+        //注意!调用时注意顺序,否则可能无效
         CRItems.load();
         CRBlocks.loadEnv();
         CRPlanets.load();
         CRTechTree.load();
         CRUnitTypes.load();
+        CRStatusEffects.load();
         CRWeathers.load();
 //        CRUtil.main();
     }

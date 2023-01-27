@@ -43,9 +43,10 @@ public class DesertPlanetGenerator extends PlanetGenerator {
 
     {
         baseSeed = 2;
-        defaultLoadout = Loadouts.basicShard;
+        defaultLoadout = Schematics.readBase64("bXNjaAF4nBWKSwqAMAwFXzW48QJeIicSF7UGLPQjSRce3wjDbGZAoBnUYhWQ1fvFeoklzc/IvQFYSjylGKb9CNg8VOuNbURlH0UHp67iY/hxfXLkFN8=");//bXNjaAF4nBWKSwqAMAwFXzW48QJeIicSF7UGLPQjSRce3wjDbGZAoBnUYhWQ1fvFeoklzc/IvQFYSjylGKb9CNg8VOuNbURlH0UHp67iY/hxfXLkFN8=
     }
 
+    //TODO 图方便,星球的规则全都放这里了
     public void addWeather(Sector sector, Rules rules){
         rules.weather.add(new Weather.WeatherEntry(CRWeathers.CRsandstorm));
         rules.fog = true;
@@ -53,6 +54,11 @@ public class DesertPlanetGenerator extends PlanetGenerator {
 //        rules.ambientLight = Color.valueOf("2D0E0D");
         rules.solarMultiplier = 0.3f;
         rules.staticFog = false;
+        rules.ghostBlocks = false;
+
+        rules.bannedBlocks.add(Blocks.copperWall);
+        rules.hideBannedBlocks = true;
+
         for(Weather.WeatherEntry entry : rules.weather){
             entry.always = true;
         }

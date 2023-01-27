@@ -16,7 +16,6 @@ import chire.world.blocks.storage.AsteroidPlanetCoreBlock;
 import chire.world.blocks.storage.DesertCoreBlock;
 import chire.world.blocks.storage.GoodCoreBlock;
 import chire.world.blocks.storage.LimitedCoreBlock;
-import chire.world.draw.DrawLaser;
 import mindustry.content.*;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
@@ -27,27 +26,14 @@ import mindustry.entities.effect.WaveEffect;
 import mindustry.entities.pattern.ShootAlternate;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
-import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.world.Block;
-import mindustry.world.blocks.campaign.LaunchPad;
 import mindustry.world.blocks.defense.Door;
-import mindustry.world.blocks.distribution.Duct;
 import mindustry.world.blocks.environment.EmptyFloor;
-import mindustry.world.blocks.environment.Floor;
-import mindustry.world.blocks.environment.StaticWall;
 import mindustry.world.blocks.production.GenericCrafter;
-import mindustry.world.blocks.production.Separator;
-import mindustry.world.blocks.production.WallCrafter;
 import mindustry.world.blocks.sandbox.ItemSource;
 import mindustry.world.blocks.sandbox.PowerSource;
-import mindustry.world.draw.DrawDefault;
-import mindustry.world.draw.DrawLiquidTile;
-import mindustry.world.draw.DrawMulti;
-import mindustry.world.draw.DrawRegion;
-import mindustry.world.meta.Attribute;
 import mindustry.world.meta.BlockFlag;
-import mindustry.world.meta.BuildVisibility;
 
 import static mindustry.type.ItemStack.with;
 
@@ -58,7 +44,8 @@ public class CRBlocks {
 
     //斯坦沐星球方块
     coiledduct, desertcore, CRPlaunchPad, asteroidcore, CRBseparator
-        //环境
+    //环境
+
         ;
     public CRBlocks() {
     }
@@ -175,7 +162,7 @@ public class CRBlocks {
         CRBseparator = new DiggingWall("CR-B-separator"){{
             requirements(Category.production, with(Items.copper, 1));
             blocks = new Block[]{Blocks.stoneWall, Blocks.iceWall};
-            blocksTime = new float[]{1, 10};
+            blocksTime = new float[]{0.1f, 5};
             results = with(
                     Items.copper, 4, Items.lead, 3, Items.graphite, 1, Items.titanium, 1,
                     CRItems.iceresidue, 3, Items.sand, 5

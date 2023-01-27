@@ -57,6 +57,8 @@ public class CRPlanets {
             landCloudColor = Color.valueOf("ed6542");
             atmosphereColor = Color.valueOf("8F7C3E");
 //            defaultEnv = Env.scorching | Env.terrestrial;
+            hiddenItems.addAll(Items.erekirItems).removeAll(CRItems.AsteroidPlanetItems);
+
             startSector = 10;
             atmosphereRadIn = 0.02f;
             atmosphereRadOut = 0.3f;
@@ -108,6 +110,9 @@ public class CRPlanets {
         //空间站spacestation(放弃改为小行星)
         Asteroid = new Planet("asteroid", parent, 1f) {{
             generator = new AsteroidPlanetGenerator();
+
+            hiddenItems.addAll(Items.erekirItems).removeAll(CRItems.AsteroidPlanetItems);
+
             alwaysUnlocked = true;
             tidalLock = false;
             clearSectorOnLose = true;
