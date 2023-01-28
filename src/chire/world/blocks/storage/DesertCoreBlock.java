@@ -1,6 +1,9 @@
 package chire.world.blocks.storage;
 
 import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
 import arc.math.Mathf;
 import arc.struct.IntFloatMap;
 import arc.struct.IntSet;
@@ -11,22 +14,26 @@ import arc.util.Tmp;
 import chire.util.CRUtil;
 import mindustry.Vars;
 import mindustry.content.Fx;
+import mindustry.entities.Units;
 import mindustry.gen.Building;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
+import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
 import mindustry.world.Tile;
 import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatCat;
 import mindustry.world.meta.StatUnit;
 
 import static mindustry.Vars.*;
 
 public class DesertCoreBlock extends CoreBlock {
     public float powerOutput;
-    public int range = 14;
+    public int range = 20;//14
     private static final IntSet taken = new IntSet();
     private static final IntFloatMap mendMap = new IntFloatMap();
     private static long lastUpdateFrame = -1;
@@ -45,7 +52,9 @@ public class DesertCoreBlock extends CoreBlock {
     @Override
     public void setStats(){
         super.setStats();
-            stats.add(Stat.basePowerGeneration, 2500, StatUnit.powerSecond);
+        stats.add(Stat.basePowerGeneration, 2500, StatUnit.powerSecond);
+        stats.add(Stat.range, range, StatUnit.blocks);
+        stats.add(new Stat("shield", StatCat.function),"\uF7A9");
     }
 
     @Override
@@ -73,14 +82,26 @@ public class DesertCoreBlock extends CoreBlock {
 
     public class DesertCoreBuild extends CoreBuild {
         public Seq<Building> targets = new Seq<>();
+        public Unit target;
         public float getPowerProduction(){
             return powerOutput / 60f;
+        }
+        @Override
+        public void draw(){
+            super.draw();
+            Draw.rect(block.region, x, y);
+            float radius = (range * tilesize) / 2f;
+
+            Draw.z(Layer.shields);
+            Draw.color(team.color, Color.white, 0);
+            Fill.square(x, y, radius);
         }
         @Override
         public void updateTile(){
             iframes -= Time.delta;
             thrusterTime -= Time.delta/90f;
 
+            //修复建筑
             targets.clear();
             taken.clear();
             indexer.eachBlock(team, Tmp.r1.setCentered(x, y, range * tilesize), b -> true, targets::add);
@@ -109,6 +130,17 @@ public class DesertCoreBlock extends CoreBlock {
                     }
                 }
                 mendMap.clear();
+            }
+            //修复单位
+            target = Units.closest(team, x, y, (range * tilesize)/2f, Unit::damaged);
+            if (target != null) {
+                if (timer.get(3f) && target.health < target.maxHealth/10) {
+                    if (target.maxHealth < 1000) {
+                        target.heal(target.maxHealth);
+                    } else {
+                        target.heal(0.3f);
+                    }
+                }
             }
         }
 

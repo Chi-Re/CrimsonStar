@@ -12,8 +12,10 @@ import mindustry.content.Blocks;
 import mindustry.game.Team;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
+import mindustry.ui.Bar;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.StackConveyor;
@@ -37,16 +39,16 @@ public class DiggingWall extends Separator{
 //         with(Items.copper, 1);
     }
 
-    //TODO 放弃,数据区块化导致玩法异常
-//    @Override
-//    public void setBars(){
-//        super.setBars();
-//        addBar("items", entity -> new Bar(
-//                () -> Core.bundle.format("bar.progress", (CRprogress / progressTime)*100),
-//                () -> Pal.items,
-//                () -> CRprogress / progressTime)
-//        );
-//    }
+    //成功,只不过不太直观
+    @Override
+    public void setBars(){
+        super.setBars();
+        addBar("items", (DiggingWallBuild entity) -> new Bar(
+                () -> Core.bundle.format("bar.progress", (int) ((entity.CRprogress / entity.progressTime)*100)),
+                () -> Pal.items,
+                () -> entity.CRprogress / entity.progressTime)
+        );
+    }
 
     @Override
     public boolean canPlaceOn(Tile tile, Team team, int rotation){

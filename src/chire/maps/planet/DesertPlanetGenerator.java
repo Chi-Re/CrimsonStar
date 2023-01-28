@@ -61,7 +61,7 @@ public class DesertPlanetGenerator extends PlanetGenerator {
         rules.staticFog = false;
         rules.ghostBlocks = false;
 
-        UnitTypes.alpha.immunities.add(CRStatusEffects.CRcorroded);
+//        UnitTypes.alpha.immunities.add(CRStatusEffects.CRcorroded);
 
         Block[] bannedBlockss = new Block[]{
                 //原版
@@ -239,7 +239,7 @@ public class DesertPlanetGenerator extends PlanetGenerator {
 
             //TODO bad
             if(Math.abs(noise(x, y + 500f, 5, 0.6f, 40f, 1f) - 0.5f) < 0.09f){
-                floor = Blocks.arkyicStone;
+                floor = Blocks.charr;
             }
 
             if(nearWall(x, y)) return;
@@ -253,7 +253,8 @@ public class DesertPlanetGenerator extends PlanetGenerator {
 
         median(2, 0.6, Blocks.arkyciteFloor);
 
-        blend(Blocks.arkyciteFloor, Blocks.arkyicStone, 4);
+        blend(Blocks.arkyciteFloor, Blocks.charr, 4);
+//        if (floor == Blocks.charr) block = Blocks.stoneWall;
 
         //TODO may overwrite floor blocks under walls and look bad
         blend(Blocks.slag, Blocks.yellowStonePlates, 4);
@@ -277,8 +278,8 @@ public class DesertPlanetGenerator extends PlanetGenerator {
                 floor = Blocks.yellowStonePlates;
             }
 
-            if((floor == Blocks.arkyciteFloor || floor == Blocks.arkyicStone) && block.isStatic()){
-                block = Blocks.arkyicWall;
+            if((floor == Blocks.arkyciteFloor || floor == Blocks.charr) && block.isStatic()){
+                block = Blocks.rhyoliteWall;
             }
 
             float max = 0;
@@ -318,21 +319,21 @@ public class DesertPlanetGenerator extends PlanetGenerator {
             if(block != Blocks.air){
                 if(nearAir(x, y)){
                     if(block == Blocks.carbonWall && noise(x + 78, y, 4, 0.7f, 33f, 1f) > 0.52f){
-                        block = Blocks.graphiticWall;
+                        block = Blocks.carbonWall;
                     }else if(block != Blocks.carbonWall && noise(x + 782, y, 4, 0.8f, 38f, 1f) > 0.665f){
-                        ore = Blocks.wallOreBeryllium;
+//                        ore = Blocks.wallOreBeryllium;
                     }
 
                 }
             }else if(!nearWall(x, y)){
 
                 if(noise(x + 150, y + x*2 + 100, 4, 0.8f, 55f, 1f) > 0.76f){
-                    ore = Blocks.oreTungsten;
+                    ore = Blocks.oreTitanium;
                 }
 
                 //TODO design ore generation so it doesn't overlap
                 if(noise(x + 999, y + 600 - x, 4, 0.63f, 45f, 1f) < 0.27f && floor == Blocks.crystallineStone){
-                    ore = Blocks.oreCrystalThorium;
+                    ore = Blocks.oreThorium;
                 }
 
             }
@@ -347,8 +348,8 @@ public class DesertPlanetGenerator extends PlanetGenerator {
                 ore = Blocks.air;
             }
 
-            if(block == Blocks.arkyicWall && rand.chance(0.23) && nearAir(x, y) && !near(x, y, 3, Blocks.crystalOrbs)){
-                block = Blocks.crystalOrbs;
+            if(block == Blocks.rhyoliteWall && rand.chance(0.23) && nearAir(x, y) && !near(x, y, 3, Blocks.crystalOrbs)){
+//                block = Blocks.crystalOrbs;
                 ore = Blocks.air;
             }
 
@@ -426,9 +427,9 @@ public class DesertPlanetGenerator extends PlanetGenerator {
 
                     int xDir = 1;
                     //set target material depending on what's encountered
-                    if(tile.floor() == Blocks.beryllicStone || tile.floor() == Blocks.arkyicStone){
-                        floor = secondFloor = Blocks.arkyicStone;
-                        vent = Blocks.arkyicVent;
+                    if(tile.floor() == Blocks.beryllicStone || tile.floor() == Blocks.charr){
+                        floor = secondFloor = Blocks.charr;
+//                        vent = Blocks.arkyicVent;
                     }else if(tile.floor() == Blocks.yellowStone || tile.floor() == Blocks.yellowStonePlates || tile.floor() == Blocks.regolith){
                         floor = Blocks.yellowStone;
                         secondFloor = Blocks.yellowStonePlates;

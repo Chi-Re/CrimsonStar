@@ -19,6 +19,7 @@ ext{
     sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
     gamePath = /*your own game path*/ "C:\\Users\\Administrator\\Desktop\\Mindustry-CN-ARC-Desktop-30355.jar"
     modPath = /*your own mod path*/ "C:\\Users\\Administrator\\AppData\\Roaming\\Mindustry\\mods"
+    verification = new File("$buildDir/libs/verification")
 }
 
 //java 8 backwards compatibility flag
@@ -76,6 +77,8 @@ task jarAndroid{
 
 jar{
     archiveFileName = "${project.archivesBaseName}Desktop.jar"
+    //Check if the mod crashes when it enters the game
+    if (!verification.exists())throw new RuntimeException("Validation failed, check the code for exceptions")
 
     from{
         configurations.runtimeClasspath.collect{ it.isDirectory() ? it : zipTree(it) }
@@ -101,6 +104,7 @@ task testMod {
             into modPath
         }
         exec {
+            if (!gamePath.exists())throw new RuntimeException("File not found! Please check if the file exists")
             commandLine 'cmd', "/c", "${gamePath}"
         }
     }
@@ -118,5 +122,14 @@ task deploy(type: Jar){
             delete "$buildDir/libs/${project.archivesBaseName}Desktop.jar"
             delete "$buildDir/libs/${project.archivesBaseName}Android.jar"
         }
+    }
+}
+
+task moduleFinder{
+    def fi = new File("C:\\Users\\Administrator\\AppData\\Roaming\\Mindustry\\mods\\Blazindustry-masterDesktop.jar")
+    if (!fi.exists()) {
+        System.out.println("Missing Mod File\nFind results:" + fi.exists())
+    } else {
+        System.out.println("Mods exist\nFind results:" + fi.exists())
     }
 }

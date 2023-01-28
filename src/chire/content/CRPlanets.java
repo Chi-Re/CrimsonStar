@@ -67,6 +67,7 @@ public class CRPlanets {
             totalRadius += 2.6f;
             lightSrcTo = 0.5f;
             lightDstFrom = 0.2f;
+            rotateTime = 24 * 20;
             clearSectorOnLose = true;
             defaultCore = CRBlocks.desertcore;
             iconColor = Color.valueOf("A16C50");

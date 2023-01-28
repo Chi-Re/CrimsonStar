@@ -53,6 +53,8 @@ public class CRBlocks {
 
         lightSpace = new EmptyFloor("light-space");
 
+
+
         WhatWall = new Door("what-wall") {
             {
                 size = 3;
