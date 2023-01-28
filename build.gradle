@@ -126,7 +126,7 @@ task deploy(type: Jar){
 }
 
 task moduleFinder{
-    def fi = new File("C:\\Users\\Administrator\\AppData\\Roaming\\Mindustry\\mods\\Blazindustry-masterDesktop.jar")
+    def fi = new File("${modPath}/${project.archivesBaseName}Desktop.jar")
     if (!fi.exists()) {
         System.out.println("Missing Mod File\nFind results:" + fi.exists())
     } else {
