@@ -104,7 +104,7 @@ task testMod {
             into modPath
         }
         exec {
-            if (!gamePath.exists())throw new RuntimeException("File not found! Please check if the file exists")
+//            if (!gamePath.exists())throw new RuntimeException("File not found! Please check if the file exists")
             commandLine 'cmd', "/c", "${gamePath}"
         }
     }

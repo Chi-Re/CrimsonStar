@@ -4,8 +4,10 @@ import arc.*;
 import arc.files.Fi;
 import arc.scene.ui.layout.Table;
 import arc.util.*;
+import arc.util.serialization.Jval;
 import chire.content.*;
 import chire.util.CRUtil;
+import chire.util.Downloads;
 import mindustry.Vars;
 import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
@@ -29,6 +31,7 @@ public class ChireJavaMod extends Mod{
     float width = Vars.android ? 250 : 300;
     float height = 60;
     private static InitiateUI.CRUI.Function function = new InitiateUI.CRUI.Function();
+    private static chire.util.Downloads downloads = new Downloads();
 
     public ChireJavaMod(){
         Log.info("Loaded ChireJavaMod constructor.");
@@ -49,6 +52,7 @@ public class ChireJavaMod extends Mod{
                     dialog2.addCloseButton();
                     dialog2.show();
                 }).size(100f, 50f);
+                downloads.load(dialog);
                 //dialog.hide();
                 //dialog.cont.button("确定", dialog::hide).size(100f, 50f);
 
@@ -97,6 +101,13 @@ public class ChireJavaMod extends Mod{
         CRUnitTypes.load();
         CRStatusEffects.load();
         CRWeathers.load();
+        try {
+            downloads.settingFile();
+            Log.info("设置路径加载完毕");
+        } catch (IOException e) {
+            Log.err("设置路径加载失败");
+            throw new RuntimeException(e);
+        }
 //        CRUtil.main();
     }
 }
