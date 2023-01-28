@@ -36,7 +36,7 @@ public class Downloads {
 
     public boolean load(BaseDialog dialog){
         dialog.cont.button("更新测试", () -> {
-            downloadsfile("https://ghproxy.com/https://raw.githubusercontent.com/Chi-Re/CrimsonStar/2811194e234eafd4c80b82ffa54d09b192a4c3b5/updata.json", updatalistfile.path(), () -> {
+            downloadsfile("https://ghproxy.com/https://github.com/Chi-Re/CrimsonStar/blob/488a272c99fc3b784725492724d4ef80550965f9/updata.json", updatalistfile.path(), () -> {
                 initial();
                 var dialog3 = new BaseDialog("更新测试");
                 dialog3.cont.add(updatadata.get(0).content).row();
