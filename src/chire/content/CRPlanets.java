@@ -122,7 +122,7 @@ public class CRPlanets {
             accessible = true;
             orbitRadius = 6;
             sectors.add(new Sector(this, PlanetGrid.Ptile.empty));
-            defaultEnv = Env.space;
+            defaultEnv = Env.terrestrial;
             meshLoader = () -> {
                 iconColor = Blocks.snow.mapColor;
                 Color tinted = Blocks.iceSnow.mapColor.cpy().a(1f - Blocks.iceSnow.mapColor.a);

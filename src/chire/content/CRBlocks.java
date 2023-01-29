@@ -11,6 +11,7 @@ import chire.world.blocks.campaign.SunLaunchPad;
 import chire.world.blocks.defense.turrets.LastResortTurret;
 import chire.world.blocks.distribution.CoiledDuct;
 import chire.world.blocks.production.DiggingWall;
+import chire.world.blocks.production.MineralCollectors;
 import chire.world.blocks.special.NewtwoWhit;
 import chire.world.blocks.storage.AsteroidPlanetCoreBlock;
 import chire.world.blocks.storage.DesertCoreBlock;
@@ -33,6 +34,10 @@ import mindustry.world.blocks.environment.EmptyFloor;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.blocks.sandbox.ItemSource;
 import mindustry.world.blocks.sandbox.PowerSource;
+import mindustry.world.draw.DrawDefault;
+import mindustry.world.draw.DrawLiquidTile;
+import mindustry.world.draw.DrawMulti;
+import mindustry.world.draw.DrawRegion;
 import mindustry.world.meta.BlockFlag;
 
 import static mindustry.type.ItemStack.with;
@@ -43,7 +48,7 @@ public class CRBlocks {
             lastresort, lightSpace, CRpowerSource, CRitemSource,
 
     //斯坦沐星球方块
-    coiledduct, desertcore, CRPlaunchPad, asteroidcore, CRBseparator
+    coiledduct, desertcore, CRPlaunchPad, asteroidcore, CRBseparator, mineralCollectors
     //环境
 
         ;
@@ -126,7 +131,7 @@ public class CRBlocks {
             unitType = UnitTypes.alpha;
             health = 1100;
             itemCapacity = 4000;
-            size = 4;
+            size = 3;
 
             powerOutput = 2000f;
 
@@ -146,6 +151,21 @@ public class CRBlocks {
             powerOutput = 2000f;
 
             unitCapModifier = 8;
+        }};
+        mineralCollectors = new MineralCollectors("mineral-collectors"){{
+            requirements(Category.crafting, with(Items.copper, 1));
+            results = with(
+                    Items.copper, 2,
+                    Items.lead, 2,
+                    Items.graphite, 3,
+                    Items.sand, 10,
+                    Items.coal, 3
+            );
+            hasPower = true;
+            craftTime = 35f;
+            size = 3;
+
+            consumePower(1.1f);
         }};
         //选择行星方块
         //TODO 动画制作未完成

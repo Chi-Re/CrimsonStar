@@ -18,7 +18,6 @@ import mindustry.type.ItemStack;
 import mindustry.ui.Bar;
 import mindustry.world.Block;
 import mindustry.world.Tile;
-import mindustry.world.blocks.distribution.StackConveyor;
 import mindustry.world.blocks.production.Separator;
 
 import static mindustry.Vars.world;

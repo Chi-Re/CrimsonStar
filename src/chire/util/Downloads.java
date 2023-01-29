@@ -1,8 +1,6 @@
 package chire.util;
 
 import arc.files.Fi;
-import arc.math.geom.Vec2;
-import arc.scene.ui.Button;
 import arc.util.Log;
 import arc.util.Time;
 import arc.util.serialization.Jval;
@@ -34,9 +32,8 @@ public class Downloads {
     public String name;
     public List<UpdataData> updatadata = new ArrayList<>();
 
-    public boolean load(BaseDialog dialog){
-        dialog.cont.button("更新测试", () -> {
-            downloadsfile("https://ghproxy.com/https://raw.githubusercontent.com/Chi-Re/CrimsonStar/master/updata.json", updatalistfile.path(), () -> {
+    public boolean load(){
+            downloadsfile("https://ghproxy.com/https://raw.githubusercontent.com/Chi-Re/Blazindustry-master-updata/master/data/modupdata.json", updatalistfile.path(), () -> {
                 //https://github.com/Chi-Re/CrimsonStar/blob/c6e50afaa962b9f0470daa344ca86f9d27bcff3a/updata.json
                 initial();
                 var dialog3 = new BaseDialog("更新测试");
@@ -45,7 +42,7 @@ public class Downloads {
                 dialog3.addCloseButton();
                 dialog3.show();
             });
-        }).size(100f, 50f);
+
         return false;
     }
     public void disableSslVerification() {

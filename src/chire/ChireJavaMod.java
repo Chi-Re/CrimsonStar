@@ -52,7 +52,10 @@ public class ChireJavaMod extends Mod{
                     dialog2.addCloseButton();
                     dialog2.show();
                 }).size(100f, 50f);
-                downloads.load(dialog);
+//                dialog.cont.button("更新测试", () -> {
+//                    downloads.load();
+//                }).size(100f, 50f);
+
                 //dialog.hide();
                 //dialog.cont.button("确定", dialog::hide).size(100f, 50f);
 
