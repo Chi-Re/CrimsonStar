@@ -2,8 +2,6 @@ package chire.content;
 
 import arc.graphics.Color;
 import arc.math.Interp;
-import arc.math.Mathf;
-import arc.struct.EnumSet;
 import chire.world.CRColer;
 import chire.world.blocks.campaign.NewAccelerator;
 import chire.world.blocks.campaign.PlanetLaunchPad;
@@ -15,9 +13,10 @@ import chire.world.blocks.production.MineralCollectors;
 import chire.world.blocks.special.NewtwoWhit;
 import chire.world.blocks.storage.AsteroidPlanetCoreBlock;
 import chire.world.blocks.storage.DesertCoreBlock;
-import chire.world.blocks.storage.GoodCoreBlock;
-import chire.world.blocks.storage.LimitedCoreBlock;
-import mindustry.content.*;
+import mindustry.content.Blocks;
+import mindustry.content.Fx;
+import mindustry.content.Items;
+import mindustry.content.UnitTypes;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.bullet.PointBulletType;
@@ -27,24 +26,17 @@ import mindustry.entities.effect.WaveEffect;
 import mindustry.entities.pattern.ShootAlternate;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
-import mindustry.type.LiquidStack;
 import mindustry.world.Block;
-import mindustry.world.blocks.defense.Door;
 import mindustry.world.blocks.environment.EmptyFloor;
-import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.blocks.sandbox.ItemSource;
 import mindustry.world.blocks.sandbox.PowerSource;
-import mindustry.world.draw.DrawDefault;
-import mindustry.world.draw.DrawLiquidTile;
-import mindustry.world.draw.DrawMulti;
-import mindustry.world.draw.DrawRegion;
-import mindustry.world.meta.BlockFlag;
+import mindustry.world.meta.BuildVisibility;
 
 import static mindustry.type.ItemStack.with;
 
 
 public class CRBlocks {
-    public static Block WhatWall, ModelCcore, oilRefiner, CRlaunchPad, CRinterplanetaryAccelerator, chireduo, limitedcore,
+    public static Block CRlaunchPad, CRinterplanetaryAccelerator,
             lastresort, lightSpace, CRpowerSource, CRitemSource,
 
     //斯坦沐星球方块
@@ -57,71 +49,6 @@ public class CRBlocks {
     public static void loadEnv() {
 
         lightSpace = new EmptyFloor("light-space");
-
-
-
-        WhatWall = new Door("what-wall") {
-            {
-                size = 3;
-                health = 1750;
-                requirements(Category.defense, with(Items.graphite, Mathf.random(1, 2)));
-            }
-        };
-        oilRefiner = new GenericCrafter("oil-refiner") {
-            {
-                size = 2;
-                requirements(Category.production, with(Items.metaglass, 30, Items.copper, 60));
-                health = 200;
-                craftTime = 90.0F;
-                liquidCapacity = 60.0F;
-                itemCapacity = 20;
-                hasPower = hasLiquids = hasItems = true;
-                outputLiquid = new LiquidStack(Liquids.oil, 0.25F);
-                requirements(Category.defense, with(Items.graphite, 100));
-            }
-        };
-        ModelCcore = new GoodCoreBlock("model-c-core"){{
-            requirements(Category.effect, with(Items.copper, 3));
-
-            unitType = UnitTypes.beta;
-            health = 3500;
-            itemCapacity = 9000;
-            size = 5;
-            thrusterLength = 34/4f;
-
-            flags = EnumSet.of(BlockFlag.core);
-
-            unitCapModifier = 16;
-            researchCostMultiplier = 0.07f;
-
-            hasPower = true;
-
-            canbreak = true;
-            canplace = true;
-            hasbuild = true;
-            numberitem = 1;
-//            consumeItem(Items.copper, 10);
-//            cblock = Blocks.swarmer;
-//            citem = Items.blastCompound;
-
-//            payloads = new BuildPayload[]{
-//
-//            };
-
-        }};
-
-        limitedcore = new LimitedCoreBlock("limited-core"){{
-            requirements(Category.effect, with(Items.copper, 2));
-            alwaysUnlocked = true;
-
-            isFirstTier = true;
-            unitType = UnitTypes.alpha;
-            health = 1100;
-            itemCapacity = 4000;
-            size = 3;
-
-            unitCapModifier = 8;
-        }};
 
         asteroidcore = new AsteroidPlanetCoreBlock("asteroid-core"){{
             requirements(Category.effect, with(Items.copper, 2));
@@ -153,7 +80,7 @@ public class CRBlocks {
             unitCapModifier = 8;
         }};
         mineralCollectors = new MineralCollectors("mineral-collectors"){{
-            requirements(Category.crafting, with(Items.copper, 1));
+            requirements(Category.production, with(Items.copper, 1));
             results = with(
                     Items.copper, 2,
                     Items.lead, 2,
@@ -170,17 +97,14 @@ public class CRBlocks {
         //选择行星方块
         //TODO 动画制作未完成
         CRPlaunchPad = new PlanetLaunchPad("CRP-launch-pad"){{
-            requirements(Category.effect, with(Items.copper, 3));
+            requirements(Category.effect, BuildVisibility.sandboxOnly,with(Items.copper, 3));
             size = 3;
             itemCapacity = 100;
             launchTime = 60f * 20;
             hasPower = false;
 //            consumePower(4f);
         }};
-        //DiggingWall
-//        CRBseparator = new DiggingWall("CR-B-separator"){{
-//            requirements(Category.production, with(Items.copper, 1));
-//        }};
+
         CRBseparator = new DiggingWall("CR-B-separator"){{
             requirements(Category.production, with(Items.copper, 1));
             blocks = new Block[]{Blocks.stoneWall, Blocks.iceWall};
@@ -196,23 +120,10 @@ public class CRBlocks {
 
             consumePower(1.1f);
         }};
-//        Crusher = new WallCrafter("CR-crusher"){{
-//            requirements(Category.production, with(Items.copper, 1));
-//            consumePower(1);
-//
-//            drillTime = 110f;
-//            size = 2;
-//            attribute = Attribute.sand;
-//            output = Items.sand;
-//            fogRadius = 2;
-//            researchCost = with(Items.copper, 1);
-//            ambientSound = Sounds.drill;
-//            ambientSoundVolume = 0.04f;
-//        }};
 
 
         CRlaunchPad = new SunLaunchPad("CR-launch-pad"){{
-            requirements(Category.effect, with(Items.copper, 3));
+            requirements(Category.effect, BuildVisibility.sandboxOnly,with(Items.copper, 3));
             size = 3;
             itemCapacity = 100;
             launchTime = 60f * 20;
@@ -221,17 +132,17 @@ public class CRBlocks {
         }};
         //TODO 模组测试作弊
         CRpowerSource = new PowerSource("CR-power-source"){{
-            requirements(Category.power, with());
+            requirements(Category.power, BuildVisibility.sandboxOnly,with());
             powerProduction = 1000000f / 60f;
             alwaysUnlocked = true;
         }};
         CRitemSource = new ItemSource("CR-item-source"){{
-            requirements(Category.distribution, with());
+            requirements(Category.distribution,BuildVisibility.sandboxOnly, with());
             alwaysUnlocked = true;
         }};
 
         CRinterplanetaryAccelerator = new NewAccelerator("new-interplanetary-accelerator"){{
-            requirements(Category.effect, with(Items.copper, 16));
+            requirements(Category.effect, BuildVisibility.sandboxOnly,with(Items.copper, 16));
             researchCostMultiplier = 0.1f;
             size = 7;
             hasPower = true;
@@ -241,61 +152,17 @@ public class CRBlocks {
             consumeItems(with(Items.copper, 4));
         }};
 
-        chireduo = new NewtwoWhit("chire-duo"){{
-            requirements(Category.turret, with(Items.copper, 35));
-            ammo(
-                    Items.copper,  new BasicBulletType(2.5f, 9){{
-                        width = 7f;
-                        height = 9f;
-                        lifetime = 60f;
-                        ammoMultiplier = 2;
-                    }},
-                    Items.graphite, new BasicBulletType(3.5f, 18){{
-                        width = 9f;
-                        height = 12f;
-                        reloadMultiplier = 0.6f;
-                        ammoMultiplier = 4;
-                        lifetime = 60f;
-                    }},
-                    Items.silicon, new BasicBulletType(3f, 12){{
-                        width = 7f;
-                        height = 9f;
-                        homingPower = 0.1f;
-                        reloadMultiplier = 1.5f;
-                        ammoMultiplier = 5;
-                        lifetime = 60f;
-                    }}
-            );
-
-            shoot = new ShootAlternate(3.5f);
-
-            size = 4;
-            shootY = 3f;
-            reload = 20f;
-            range = 110;
-            shootCone = 15f;
-            ammoUseEffect = Fx.casing1;
-            health = 250;
-            inaccuracy = 2f;
-            rotateSpeed = 10f;
-            coolant = consumeCoolant(0.1f);
-            researchCostMultiplier = 0.05f;
-
-            limitRange();
-        }};
-
         coiledduct = new CoiledDuct("coiled-duct"){{
             requirements(Category.distribution, with(Items.copper, 1));
             health = 90;
             speed = 4f;
-//            displayedSpeed = 4.2f;
             buildCostMultiplier = 2f;
             hasPower = true;
             consumesPower = true;
             conductivePower = true;
             researchCost = with(Items.copper, 5);
         }};
-
+//            displayedSpeed = 4.2f;
 
 //        asd = new BuildPayload(chireduo, Team.derelict){};
 
@@ -310,7 +177,7 @@ public class CRBlocks {
             rebuildable = false;
             inaccuracy = 0;
             rotateSpeed = 99;
-            requirements(Category.effect, with(Items.lead, 50, Items.silicon, 30));
+            requirements(Category.effect,BuildVisibility.sandboxOnly, with(Items.lead, 50, Items.silicon, 30));
             shootType = new BasicBulletType(0, 112) {{
                 killShooter = true;
                 hittable = false;

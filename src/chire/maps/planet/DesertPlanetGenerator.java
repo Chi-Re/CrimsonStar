@@ -68,8 +68,10 @@ public class DesertPlanetGenerator extends PlanetGenerator {
                 Blocks.waterExtractor, Blocks.cultivator, Blocks.rotaryPump, Blocks.navalFactory,
                 Blocks.mechanicalPump, Blocks.impulsePump, Blocks.sporePress, Blocks.mender,
                 Blocks.mendProjector,
+                Blocks.conveyor, Blocks.titaniumConveyor,
+                Blocks.coreFoundation, Blocks.coreNucleus,
                 //模组
-                CRBlocks.asteroidcore, CRBlocks.limitedcore
+                CRBlocks.asteroidcore, CRBlocks.CRPlaunchPad
         };
         for (Block blockss : bannedBlockss) {
             rules.bannedBlocks.add(blockss);

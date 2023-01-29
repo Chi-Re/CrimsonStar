@@ -6,6 +6,7 @@ import arc.math.geom.Vec3;
 import chire.content.CRBlocks;
 import chire.util.WorldDef;
 import mindustry.content.Blocks;
+import mindustry.game.Rules;
 import mindustry.game.Team;
 import mindustry.game.Waves;
 import mindustry.graphics.g3d.PlanetParams;
@@ -21,6 +22,23 @@ public class AsteroidPlanetGenerator extends BlankPlanetGenerator {
     public Block core = CRBlocks.asteroidcore;
     @Override
     public void generate(){
+        Block[] bannedBlockss = new Block[]{
+                //原版
+                Blocks.waterExtractor, Blocks.cultivator, Blocks.rotaryPump, Blocks.navalFactory,
+                Blocks.mechanicalPump, Blocks.impulsePump, Blocks.sporePress, Blocks.thermalGenerator,
+                Blocks.combustionGenerator, Blocks.steamGenerator,
+                Blocks.conveyor, Blocks.titaniumConveyor, Blocks.armoredConveyor,
+                Blocks.siliconSmelter, Blocks.kiln, Blocks.surgeSmelter,
+                Blocks.coreFoundation, Blocks.coreNucleus,
+                //模组
+                CRBlocks.desertcore, CRBlocks.CRPlaunchPad
+        };
+        for (Block blockss : bannedBlockss) {
+            state.rules.bannedBlocks.add(blockss);
+        }
+        state.rules.hideBannedBlocks = true;
+
+
         seed = state.rules.sector.planet.id;
         int sx = width/2, sy = height/2;
         rand = new Rand(seed);
@@ -70,6 +88,7 @@ public class AsteroidPlanetGenerator extends BlankPlanetGenerator {
 
         state.rules.showSpawns = true;
         state.rules.spawns = Waves.generate(0.5f, rand, false, true, false);
+        state.rules.staticFog = true;
     }
 
     @Override
