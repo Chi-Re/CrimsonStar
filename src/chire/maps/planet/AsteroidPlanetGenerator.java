@@ -31,7 +31,7 @@ public class AsteroidPlanetGenerator extends BlankPlanetGenerator {
                 Blocks.siliconSmelter, Blocks.kiln, Blocks.surgeSmelter,
                 Blocks.coreFoundation, Blocks.coreNucleus,
                 //模组
-                CRBlocks.desertcore, CRBlocks.CRPlaunchPad
+                CRBlocks.desertcore, CRBlocks.CRPlaunchPad, CRBlocks.mineralCollectors
         };
         for (Block blockss : bannedBlockss) {
             state.rules.bannedBlocks.add(blockss);

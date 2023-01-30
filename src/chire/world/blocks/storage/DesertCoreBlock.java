@@ -52,7 +52,7 @@ public class DesertCoreBlock extends CoreBlock {
     @Override
     public void setStats(){
         super.setStats();
-        stats.add(Stat.basePowerGeneration, 2500, StatUnit.powerSecond);
+        stats.add(Stat.basePowerGeneration, 2000f, StatUnit.powerSecond);
         stats.add(Stat.range, range, StatUnit.blocks);
         stats.add(new Stat("shield", StatCat.function),"\uF7A9");
     }

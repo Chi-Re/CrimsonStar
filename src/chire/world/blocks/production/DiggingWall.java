@@ -19,6 +19,7 @@ import mindustry.ui.Bar;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.production.Separator;
+import mindustry.world.meta.Env;
 
 import static mindustry.Vars.world;
 
@@ -34,6 +35,7 @@ public class DiggingWall extends Separator{
         super(name);
         rotate = true;
         sync = true;
+        envEnabled |= Env.space;
 //        //TODO 物品初始化,否则会返回null
 //         with(Items.copper, 1);
     }

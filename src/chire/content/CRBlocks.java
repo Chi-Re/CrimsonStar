@@ -92,7 +92,7 @@ public class CRBlocks {
             craftTime = 35f;
             size = 3;
 
-            consumePower(1.1f);
+            powerOutput = 200f;
         }};
         //选择行星方块
         //TODO 动画制作未完成

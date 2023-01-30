@@ -49,7 +49,7 @@ public class CRParticleWeather extends ParticleWeather {
             if(damageTimer <= 0) {
                 damageTimer = statusDuration - 5f;
                 Groups.build.each(b -> {
-                    if (b.block().id != CRBlocks.desertcore.id) {
+                    if (b.block().id != CRBlocks.desertcore.id && b.block().id != CRBlocks.mineralCollectors.id) {
                         b.damage(b.maxHealth()/10);
                     }
 //                    if (b.block().buildType == Blocks.conveyor.buildType) {

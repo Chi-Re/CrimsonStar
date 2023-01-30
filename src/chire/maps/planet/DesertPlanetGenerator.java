@@ -71,7 +71,7 @@ public class DesertPlanetGenerator extends PlanetGenerator {
                 Blocks.conveyor, Blocks.titaniumConveyor,
                 Blocks.coreFoundation, Blocks.coreNucleus,
                 //模组
-                CRBlocks.asteroidcore, CRBlocks.CRPlaunchPad
+                CRBlocks.asteroidcore, CRBlocks.CRPlaunchPad, CRBlocks.CRBseparator
         };
         for (Block blockss : bannedBlockss) {
             rules.bannedBlocks.add(blockss);
