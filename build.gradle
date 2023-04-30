@@ -1,0 +1,144 @@
+apply plugin: "java"
+
+version '1.0'
+
+targetCompatibility = 8
+sourceCompatibility = JavaVersion.VERSION_16
+
+sourceSets.main.java.srcDirs = ["src"]
+
+repositories{
+    mavenCentral()
+    maven{ url 'https://www.jitpack.io' }
+}
+
+ext{
+    //the build number that this mod is made for
+    mindustryVersion = 'v141.2'
+    jabelVersion = "93fde537c7"
+    sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
+    gamePath = /*your own game path*/ "C:\\Users\\Administrator\\Desktop\\Mindustry-CN-ARC-Desktop-30386.jar"
+    modPath = /*your own mod path*/ "C:\\Users\\Administrator\\AppData\\Roaming\\Mindustry\\mods"
+    uncVersion = '1.7.4'
+    loadunc = false
+}
+
+//java 8 backwards compatibility flag
+allprojects{
+    tasks.withType(JavaCompile){
+        options.encoding = "UTF-8"
+        options.fork = true
+        options.forkOptions.jvmArgs.addAll([
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED",
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED",
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED",
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED",
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED",
+                "--add-opens", "jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED"
+        ])
+
+        options.compilerArgs.addAll(['--release', '8'])
+    }
+}
+
+dependencies{
+    compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
+    compileOnly "com.github.Anuken.MindustryJitpack:core:$mindustryVersion"
+    implementation 'commons-codec:commons-codec:1.15'
+    compileOnly 'org.jetbrains:annotations:24.0.1'
+
+    // https://mvnrepository.com/artifact/net.sf.json-lib/json-lib
+    //JSONObject
+    //implementation 'net.sf.json-lib:json-lib:2.4:jdk15'
+    implementation 'com.alibaba.fastjson2:fastjson2:2.0.29'
+
+    if (loadunc) {
+        //TODO 将compileOnly -> implementation似乎可以将依赖也打包进去？
+        //TODO 以后看看？
+        implementation "com.github.EB-wilson.UniverseCore:mindustry:$uncVersion"
+        implementation "com.github.EB-wilson.UniverseCore:utilties:$uncVersion"
+        implementation "com.github.EB-wilson.UniverseCore:abstract:$uncVersion"
+        implementation "com.github.EB-wilson.UniverseCore:implabstract:$uncVersion"
+        implementation "com.github.EB-wilson.UniverseCore:dynamilizer:$uncVersion"
+        implementation "com.github.EB-wilson.UniverseCore:annotations:$uncVersion"
+        annotationProcessor "com.github.EB-wilson.UniverseCore:annotations:$uncVersion"
+    }
+    annotationProcessor "com.github.Anuken:jabel:$jabelVersion"
+}
+
+//force arc version
+configurations.all{
+    resolutionStrategy.eachDependency { details ->
+        if(details.requested.group == 'com.github.Anuken.Arc'){
+            details.useVersion "$mindustryVersion"
+        }
+    }
+}
+
+task jarAndroid{
+    dependsOn "jar"
+
+    doLast{
+        if(!sdkRoot || !new File(sdkRoot).exists()) throw new GradleException("No valid Android SDK found. Ensure that ANDROID_HOME is set to your Android SDK directory.");
+
+        def platformRoot = new File("$sdkRoot/platforms/").listFiles().sort().reverse().find{ f -> new File(f, "android.jar").exists()}
+
+        if(!platformRoot) throw new GradleException("No android.jar found. Ensure that you have an Android platform installed.")
+
+        //collect dependencies needed for desugaring
+        def dependencies = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File(platformRoot, "android.jar")]).collect{ "--classpath $it.path" }.join(" ")
+
+        //dex and desugar files - this requires d8 in your PATH
+        "F:\\android-sdk-windows\\build-tools\\29.0.3\\d8.bat $dependencies --min-api 14 --output ${project.archivesBaseName}Android.jar ${project.archivesBaseName}Desktop.jar"
+                .execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
+    }
+}
+
+jar{
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveFileName = "${project.archivesBaseName}Desktop.jar"
+
+    from{
+        configurations.runtimeClasspath.collect{ it.isDirectory() ? it : zipTree(it) }
+    }
+
+    from(rootDir){
+        include "mod.hjson"
+    }
+
+    from("assets/"){
+        include "**"
+    }
+}
+
+task testMod {
+    dependsOn jar
+    doLast {
+        delete{
+            delete "${modPath}/${project.archivesBaseName}Desktop.jar"
+        }
+        copy {
+            from "$buildDir/libs/${project.archivesBaseName}Desktop.jar"
+            into modPath
+        }
+        exec {
+//            if (!gamePath.exists())throw new RuntimeException("File not found! Please check if the file exists")
+            commandLine 'cmd', "/c", "${gamePath}"
+        }
+    }
+}
+
+task deploy(type: Jar){
+    dependsOn jarAndroid
+    dependsOn jar
+    archiveFileName = "${project.archivesBaseName}.jar"
+
+    from{ [zipTree("$buildDir/libs/${project.archivesBaseName}Desktop.jar"), zipTree("$buildDir/libs/${project.archivesBaseName}Android.jar")] }
+
+    doLast{
+        delete{
+            delete "$buildDir/libs/${project.archivesBaseName}Desktop.jar"
+            delete "$buildDir/libs/${project.archivesBaseName}Android.jar"
+        }
+    }
+}

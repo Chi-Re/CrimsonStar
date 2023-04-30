@@ -1,0 +1,8 @@
+displayName: "绯红星海"//炽工业
+name: "crimson-star"//blazindustry
+author: "炽热S"
+main: "chire.ChireJavaMod"
+description: "更多的玩法!可能会用很长很长时间\n我的模组群:587237182"
+version: 1.0.0
+minGameVersion: 136
+java: true
