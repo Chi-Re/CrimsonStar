@@ -2,8 +2,10 @@ package chire.util;
 
 import arc.Core;
 import arc.func.Prov;
+import com.alibaba.fastjson2.JSONObject;
 
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 一个用来写入数据到游戏的类,使用{@code putJson}写入<br>
@@ -60,33 +62,24 @@ public class CoreCache {
     }
 
     /**json方法,可能不是很好,但可以解决燃眉之寄*/
-    public static String jsonA(Object str) {
-        return "\"" + str + "\":";
+    public static Map<String, Object> jsonMap() {
+        return new HashMap<>();
     }
-    public static String jsonA(Object str1, Object str2, boolean have) {
-        if (!Objects.equals(str2.toString(), "true") && !Objects.equals(str2.toString(), "false")) {
-            str2 = " \"" + str2 + "\"";
-        }
-        if (have) {
-            return jsonA(str1) + " " + str2 + ",";
-        } else {
-            return jsonA(str1) + " " + str2;
+    public static void jsonPut(Map<String, Object> map, String s, Object o) {
+        map.put(s, o);
+    }
+    public static void jsonPut(Map<String, Object> map, String[] s, Object[] o) {
+        for (int i = 0; i < s.length; i++) {
+            map.put(s[i], o[i]);
         }
     }
-    public static String jsonA(Object str1, Object str2) {
-        return jsonA(str1, str2, true);
+    public static Object jsonGet(Map<String, Object> map, String s) {
+        return map.get(s);
     }
-    public static String jsonB(String str) {
-        return "{" + str + "}";
+    public static JSONObject jsonObject(Map<?, ?> map) {
+        return new JSONObject(map);
     }
-    public static String jsonB(String... strs) {
-        StringBuilder ret = new StringBuilder();
-        for (String str : strs) {
-            ret.append(str);
-        }
-        return "{" + ret + "}";
-    }
-    public static String jsonA1(String str1, String str2) {
-        return jsonA(str1) + str2;
+    public static JSONObject jsonObject(String text) {
+        return JSONObject.parseObject(text);
     }
 }

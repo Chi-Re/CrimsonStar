@@ -57,7 +57,12 @@ public class ChireJavaMod extends Mod{
 //                        searchtxt = String.valueOf(data);
 //                        Map<String, Object> map = new HashMap<>();
 //                        map.put("name", "chire");
-//                        searchtxt = new JSONObject(map).toJSONString();
+                        //TODO 输出测试区
+//                        Map<String, Object> map = jsonMap();
+//                        jsonPut(map, "name", "chire");
+//                        JSONObject jsonObject = jsonObject(map);
+//                        searchtxt = jsonObject.toString();
+//                        searchtxt = getString("data");
                         //searchtxt = jsonB(jsonA("alwaysUnlocked", true), jsonA("accessible", true), jsonA("visible", true));
                     }
                     dialog1.cont.field(keytxt, res -> {
@@ -72,37 +77,6 @@ public class ChireJavaMod extends Mod{
                     dialog1.cont.button("清除", () -> {
                         remove(keytxt);
                     }).size(100f, 50f).row();
-
-//                    dialog1.cont.button("下载", () -> {
-//                        BaseDialog dialog3 = new BaseDialog("下载");
-//                        dialog3.cont.field(downloadHttp, res -> {
-//                            downloadHttp = res;
-//                        }).size(1000f, 50f).row();
-//                        dialog3.cont.button("下载", () -> {
-////                            modImportProgress = 0f;
-////                            ui.loadfrag.show("@downloading");
-////                            ui.loadfrag.setProgress(() -> modImportProgress);
-//
-//                            //1、连接服务器，获取一个文件，获取文件的长度，在本地创建一个大小跟服务器文件一样大的临时文件
-//                            ThreadDownload threadDownload = new ThreadDownload(downloadHttp, modDirectory.path());
-//                            //设置线程数
-//                            threadDownload.setThreadCount(1);
-//                            //开启断点下载
-//                            //threadDownload.setBpDownload(true);
-//                            //添加进度和网速监听
-////                            threadDownload.addSpeedListener(new SpeedListener() {
-////                                @Override
-////                                public void speed(int s, double progress) {
-////                                    modImportProgress = (float) (progress/10);
-////                                }
-////
-////                            });
-//                            //由于ThreadDownload类也是个线程类，可以开启线程
-//                            threadDownload.run();
-//
-//                        }).size(100f, 50f);
-//                        dialog3.show();
-//                    }).size(100f, 50f);
 
                     dialog1.cont.button("退出", dialog1::hide).size(100f, 50f);
                     dialog1.closeOnBack();
@@ -131,6 +105,9 @@ public class ChireJavaMod extends Mod{
         CRTechTree.load();
         CRUnitTypes.load();
         runEvents();
+
+        //检查是否为第一次启动(true时代表不是第一次启动)
+        put("started", true);
     }
 //老旧
     public void qwert(Button button) {
