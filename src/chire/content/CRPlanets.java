@@ -50,6 +50,7 @@ public class CRPlanets {
             if (getBoolean("started")) {
                 put("data", "az");
                 //不是第一次启动
+                if (Objects.equals(getString(planet.name), "")) initializePlanets(planet);
                 JSONObject planetdata = jsonObject(getString(planet.name));
                 planet.alwaysUnlocked = planetdata.getBoolean("alwaysUnlocked");
                 planet.accessible = planetdata.getBoolean("accessible");
@@ -58,15 +59,13 @@ public class CRPlanets {
             } else {
                 put("data", "za");
                 //是第一次启动
-                Map<String, Object> map = jsonMap();
-                jsonPut(map, new String[]{
-                        "alwaysUnlocked", "accessible", "visible", "orbitRadius"
-                }, new Object[]{
-                        planet.alwaysUnlocked, planet.accessible, planet.visible, planet.orbitRadius
-                });
-                put(planet.name, jsonObject(map).toString());
+                initializePlanets(planet);
             }
         }
+    }
+
+    public static void initializePlanets(Planet planet) {
+        putPlanetaryData(planet);
     }
 
     /**摧毁星球*/
@@ -91,18 +90,20 @@ public class CRPlanets {
     public static void destroy(Planet planet) {
         destroy(planet, null);
     }
-    public static void putPlanetaryData(Planet planet, boolean alwaysUnlocked, boolean accessible, boolean visible){
-//        String data = jsonB(
-//                jsonA("alwaysUnlocked", alwaysUnlocked),
-//                jsonA("accessible", accessible),
-//                jsonA("visible", visible, true)
-//        );
-//        Jval.JsonArray data = new Jval.JsonArray();
-//        data.add(Jval.valueOf("name"), Jval.valueOf(true));
-//        put(planet.name, data);
+    public static void putPlanetaryData(Planet planet, boolean alwaysUnlocked, boolean accessible, boolean visible, float orbitRadius){
+        Map<String, Object> map = jsonMap();
+        jsonPut(map, new String[]{
+                "alwaysUnlocked", "accessible", "visible", "orbitRadius"
+        }, new Object[]{
+                alwaysUnlocked, accessible, visible, orbitRadius
+        });
+        put(planet.name, jsonObject(map).toString());
+    }
+    public static void putPlanetaryData(Planet planet, Float orbitRadius){
+        putPlanetaryData(planet, planet.alwaysUnlocked, planet.accessible, planet.visible, orbitRadius);
     }
     public static void putPlanetaryData(Planet planet){
-        putPlanetaryData(planet, planet.alwaysUnlocked, planet.accessible, planet.visible);
+        putPlanetaryData(planet, planet.orbitRadius);
     }
 
 
