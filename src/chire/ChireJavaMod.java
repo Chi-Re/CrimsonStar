@@ -11,7 +11,7 @@ import chire.content.CRBlocks;
 import chire.content.CRPlanets;
 import chire.content.CRTechTree;
 import chire.content.CRUnitTypes;
-import com.alibaba.fastjson2.JSONObject;
+import chire.ui.CRJoinDialog;
 import mindustry.content.Planets;
 import mindustry.game.EventType;
 import mindustry.game.EventType.ClientLoadEvent;
@@ -20,11 +20,7 @@ import mindustry.mod.Mod;
 import mindustry.ui.MobileButton;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
-import org.python.util.PythonInterpreter;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static chire.util.CoreCache.*;
@@ -110,6 +106,8 @@ public class ChireJavaMod extends Mod{
 
         //检查是否为第一次启动(true时代表不是第一次启动)
         put("started", true);
+        //修改原版
+        ui.join = new CRJoinDialog();
     }
 //老旧
     public void qwert(Button button) {
