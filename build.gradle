@@ -52,7 +52,8 @@ dependencies{
     //implementation 'net.sf.json-lib:json-lib:2.4:jdk15'
     implementation 'com.alibaba.fastjson2:fastjson2:2.0.29'
 
-    implementation 'org.python:jython-standalone:2.7.2'
+    //TODO 有趣的python依赖，以后试试
+    //implementation 'org.python:jython-standalone:2.7.2'
 
     if (loadunc) {
         //TODO 将compileOnly -> implementation似乎可以将依赖也打包进去？

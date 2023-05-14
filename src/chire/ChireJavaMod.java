@@ -44,12 +44,6 @@ public class ChireJavaMod extends Mod{
         Events.on(ClientLoadEvent.class, e -> {
             //show dialog upon startup
             Time.runTask(10f, () -> {
-                try(PythonInterpreter interpreter = new PythonInterpreter()){
-                    interpreter.exec("f = open('test.txt', 'w');");
-                    interpreter.exec("f.write('chire')");
-                    interpreter.exec("f.close()");
-                }
-
                 BaseDialog dialog = new BaseDialog("frog");
                 dialog.cont.add("behold").row();
                 //mod sprites are prefixed with the mod name (this mod is called 'example-java-mod' in its config)
