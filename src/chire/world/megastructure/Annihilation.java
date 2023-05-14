@@ -1,22 +1,30 @@
 package chire.world.megastructure;
 
-import arc.Core;
+import arc.Events;
+import arc.Graphics;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Angles;
+import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
-import mindustry.Vars;
-import mindustry.content.Planets;
-import mindustry.gen.Icon;
-import mindustry.graphics.g3d.PlanetParams;
-import mindustry.type.Planet;
-import mindustry.type.Sector;
-import mindustry.ui.dialogs.PlanetDialog;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.content.Blocks;
+import mindustry.game.EventType;
+import mindustry.gen.Building;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.type.Item;
+import mindustry.type.ItemStack;
+import mindustry.world.Block;
 import mindustry.world.blocks.campaign.Accelerator;
 
-import static chire.ui.PopDialogs.showToast;
-import static mindustry.Vars.state;
-import static mindustry.Vars.ui;
+import static mindustry.Vars.*;
 
 public class Annihilation extends Accelerator {
-    public Annihilation(String name) {
+
+    public Annihilation(String name){
         super(name);
         update = true;
         solid = true;
@@ -27,60 +35,106 @@ public class Annihilation extends Accelerator {
 
     @Override
     public void init(){
+        itemCapacity = 0;
+        capacities = new int[content.items().size];
+        for(ItemStack stack : launching.requirements){
+            capacities[stack.item.id] = stack.amount;
+            itemCapacity += stack.amount;
+        }
+        consumeItems(launching.requirements);
+        super.init();
     }
 
-    public class AnnihilationBuild extends AcceleratorBuild {
+    @Override
+    public boolean outputsItems(){
+        return false;
+    }
+
+    public class AcceleratorBuild extends Building {
+        public float heat, statusLerp;
+
+        @Override
+        public void updateTile(){
+            super.updateTile();
+            heat = Mathf.lerpDelta(heat, efficiency, 0.05f);
+            statusLerp = Mathf.lerpDelta(statusLerp, power.status, 0.05f);
+        }
+
+        @Override
+        public void draw(){
+            super.draw();
+
+            for(int l = 0; l < 4; l++){
+                float length = 7f + l * 5f;
+                Draw.color(Tmp.c1.set(Pal.darkMetal).lerp(team.color, statusLerp), Pal.darkMetal, Mathf.absin(Time.time + l*50f, 10f, 1f));
+
+                for(int i = 0; i < 4; i++){
+                    float rot = i*90f + 45f;
+                    Draw.rect(arrowRegion, x + Angles.trnsx(rot, length), y + Angles.trnsy(rot, length), rot + 180f);
+                }
+            }
+
+            if(heat < 0.0001f) return;
+
+            float rad = size * tilesize / 2f * 0.74f;
+            float scl = 2f;
+
+            Draw.z(Layer.bullet - 0.0001f);
+            Lines.stroke(1.75f * heat, Pal.accent);
+            Lines.square(x, y, rad * 1.22f, 45f);
+
+            Lines.stroke(3f * heat, Pal.accent);
+            Lines.square(x, y, rad, Time.time / scl);
+            Lines.square(x, y, rad, -Time.time / scl);
+
+            Draw.color(team.color);
+            Draw.alpha(Mathf.clamp(heat * 3f));
+
+            for(int i = 0; i < 4; i++){
+                float rot = i*90f + 45f + (-Time.time /3f)%360f;
+                float length = 26f * heat;
+                Draw.rect(arrowRegion, x + Angles.trnsx(rot, length), y + Angles.trnsy(rot, length), rot + 180f);
+            }
+
+            Draw.reset();
+        }
+
+        @Override
+        public Graphics.Cursor getCursor(){
+            return !state.isCampaign() || efficiency <= 0f ? Graphics.Cursor.SystemCursor.arrow : super.getCursor();
+        }
 
         @Override
         public void buildConfiguration(Table table){
-            //ui.showInfo("This block has been removed from the tech tree as of v7, and no longer has a use.\n\nWill it ever be used for anything? Who knows.");
+            deselect();
 
-//            ui.planet.showPlanetLaunch(state.rules.sector, sector -> {
-//                //TODO cutscene, etc...
-//
-//                //TODO should consume resources based on destination schem
-//                consume();
-//
-//                universe.clearLoadoutInfo();
-//                universe.updateLoadout(sector.planet.generator.defaultLoadout.findCore(), sector.planet.generator.defaultLoadout);
+            if(!state.isCampaign() || efficiency <= 0f) return;
 
-//                Planet planet = Planets.erekir;
-//                planet.alwaysUnlocked = false;
-//                planet.accessible = false;
-//                planet.visible = false;
-//            });
+            ui.showInfo("This block has been removed from the tech tree as of v7, and no longer has a use.\n\nWill it ever be used for anything? Who knows.");
 
-//            Planet planet = state.rules.sector.planet;
-//            state.gameOver = true;
-//            Events.fire(new EventType.GameOverEvent(state.rules.waveTeam));
-//            Planet canaccessible;
-//            for (Planet planet : Planets.sun.children) {
-//                if (planet.accessible || planet.visible){
-//                    canaccessible = planet;
-//                }
-//            }
-//            ui.planet.showPlanetLaunch(state.rules.sector, s -> {
-//                ui.planet.show();
-            Planet planet = state.rules.sector.planet;
-//                for (var core : player.team().cores().copy()) {
-//                    core.kill();
-//                }
-            for (Sector sector : planet.sectors) {
-                //Events.fire(new EventType.SectorLoseEvent(sector));
-                sector.info.items.clear();
-                sector.info.damage = 1f;
-                sector.info.hasCore = false;
-                sector.info.production.clear();//弹窗
-            }
+            if(false)
+                ui.planet.showPlanetLaunch(state.rules.sector, sector -> {
+                    //TODO cutscene, etc...
 
-            planet.alwaysUnlocked = false;
-            planet.accessible = false;
-            planet.visible = false;
-            ui.planet.state.planet = Planets.erekir;
-            showToast(Icon.warning, Core.bundle.format("planet.lost", planet.name));
+                    //TODO should consume resources based on destination schem
+                    consume();
 
-//                Events.fire(EventType.Trigger.acceleratorUse);
-//            });
+                    universe.clearLoadoutInfo();
+                    universe.updateLoadout(sector.planet.generator.defaultLoadout.findCore(), sector.planet.generator.defaultLoadout);
+                });
+
+            Events.fire(EventType.Trigger.acceleratorUse);
+        }
+
+        @Override
+        public int getMaximumAccepted(Item item){
+            return capacities[item.id];
+        }
+
+        @Override
+        public boolean acceptItem(Building source, Item item){
+            return items.get(item) < getMaximumAccepted(item);
         }
     }
 }
+
