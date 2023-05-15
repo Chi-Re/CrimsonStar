@@ -50,6 +50,7 @@ public class ChireJavaMod extends Mod{
                     searchtxt = get(keytxt, String.class, String::new);
                     if (Objects.equals(searchtxt, "")) {
                         searchtxt = "null!!!";
+                        searchtxt = Core.settings.getString("ip");
 //                        Jval.JsonArray data = new Jval.JsonArray();//commons-beanutils-1.8.0.jar、commons-collections、commons-lang-2.4、commons-logging-1.1、ezmorph-1.0.4、json-lib-2.3-jdk15
 //                        data.add(Jval.valueOf("name"), Jval.valueOf(true));
 //                        searchtxt = String.valueOf(data);
@@ -104,10 +105,12 @@ public class ChireJavaMod extends Mod{
         CRUnitTypes.load();
         runEvents();
 
-        //检查是否为第一次启动(true时代表不是第一次启动)
-        put("started", true);
         //修改原版
-        ui.join = new CRJoinDialog();
+        Events.on(ClientLoadEvent.class, e -> {
+            //检查是否为第一次启动(true时代表不是第一次启动)
+            put("started", true);
+            ui.join = new CRJoinDialog();
+        });
     }
 //老旧
     public void qwert(Button button) {
