@@ -20,6 +20,7 @@ public class CRBlocks {
             hasPower = true;
             buildCostMultiplier = 0.5f;
             scaledHealth = 80;
+            consumePower(1f);
         }};
     }
 }

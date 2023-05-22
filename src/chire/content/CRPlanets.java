@@ -39,18 +39,14 @@ public class CRPlanets {
 
             };
         }};
-
-
-
-        putAny();
     }
 
-    public static void putAny() {
+    public static void init() {
         for (Planet planet : allPlanet) {
             if (getBoolean("started")) {
                 put("data", "az");
                 //不是第一次启动
-                if (Objects.equals(getString(planet.name), "")) initializePlanets(planet);
+                if (Objects.equals(getString(planet.name), "")) init(planet);
                 JSONObject planetdata = jsonObject(getString(planet.name));
                 planet.alwaysUnlocked = planetdata.getBoolean("alwaysUnlocked");
                 planet.accessible = planetdata.getBoolean("accessible");
@@ -59,12 +55,12 @@ public class CRPlanets {
             } else {
                 put("data", "za");
                 //是第一次启动
-                initializePlanets(planet);
+                init(planet);
             }
         }
     }
 
-    public static void initializePlanets(Planet planet) {
+    public static void init(Planet planet) {
         putPlanetaryData(planet);
     }
 

@@ -10,7 +10,7 @@ import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
 import arc.util.Time;
 import arc.util.Tmp;
-import mindustry.content.Blocks;
+import mindustry.content.Items;
 import mindustry.game.EventType;
 import mindustry.gen.Building;
 import mindustry.graphics.Layer;
@@ -18,11 +18,12 @@ import mindustry.graphics.Pal;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.world.Block;
-import mindustry.world.blocks.campaign.Accelerator;
 
+import static chire.ChireJavaMod.Load;
 import static mindustry.Vars.*;
 
-public class Annihilation extends Accelerator {
+public class Annihilation extends Block {
+    public TextureRegion arrowRegion;
 
     public Annihilation(String name){
         super(name);
@@ -34,14 +35,14 @@ public class Annihilation extends Accelerator {
     }
 
     @Override
+    public void load() {
+        super.load();
+        arrowRegion = Load("launch-arrow");
+    }
+
+    @Override
     public void init(){
-        itemCapacity = 0;
-        capacities = new int[content.items().size];
-        for(ItemStack stack : launching.requirements){
-            capacities[stack.item.id] = stack.amount;
-            itemCapacity += stack.amount;
-        }
-        consumeItems(launching.requirements);
+        consumeItems(new ItemStack(Items.copper, 1));
         super.init();
     }
 
@@ -122,13 +123,11 @@ public class Annihilation extends Accelerator {
                     universe.clearLoadoutInfo();
                     universe.updateLoadout(sector.planet.generator.defaultLoadout.findCore(), sector.planet.generator.defaultLoadout);
                 });
-
-            Events.fire(EventType.Trigger.acceleratorUse);
         }
 
         @Override
         public int getMaximumAccepted(Item item){
-            return capacities[item.id];
+            return itemCapacity;
         }
 
         @Override

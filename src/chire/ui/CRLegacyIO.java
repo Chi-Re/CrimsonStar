@@ -2,13 +2,6 @@ package chire.ui;
 
 import arc.Core;
 import arc.struct.Seq;
-import arc.struct.StringMap;
-import arc.util.Log;
-import mindustry.Vars;
-import mindustry.ctype.Content;
-import mindustry.ctype.ContentType;
-import mindustry.ctype.UnlockableContent;
-import mindustry.ui.dialogs.JoinDialog;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;

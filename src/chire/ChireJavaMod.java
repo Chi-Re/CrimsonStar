@@ -2,16 +2,15 @@ package chire;
 
 import arc.Core;
 import arc.Events;
+import arc.graphics.g2d.TextureRegion;
 import arc.scene.style.Drawable;
 import arc.scene.ui.Button;
 import arc.scene.ui.layout.Table;
 import arc.util.Log;
 import arc.util.Time;
-import chire.content.CRBlocks;
-import chire.content.CRPlanets;
-import chire.content.CRTechTree;
-import chire.content.CRUnitTypes;
+import chire.content.*;
 import chire.ui.CRJoinDialog;
+import mindustry.Vars;
 import mindustry.content.Planets;
 import mindustry.game.EventType;
 import mindustry.game.EventType.ClientLoadEvent;
@@ -20,9 +19,11 @@ import mindustry.mod.Mod;
 import mindustry.ui.MobileButton;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
+import mindustry.ui.dialogs.SettingsMenuDialog;
 
 import java.util.Objects;
 
+import static arc.Core.atlas;
 import static chire.util.CoreCache.*;
 import static mindustry.Vars.state;
 import static mindustry.Vars.ui;
@@ -31,10 +32,10 @@ public class ChireJavaMod extends Mod{
     private String searchtxt;
     private String keytxt;
     private int unitsCreated;
-    private String downloadHttp;
+    private static final String ModName = "crimson-star";
 
     public ChireJavaMod(){
-        Log.info("Loaded ExampleJavaMod constructor.");
+        Log.info(logInfo("#CHIRE# 模组加载"));
 
         //listen for game load event
         Events.on(ClientLoadEvent.class, e -> {
@@ -97,20 +98,35 @@ public class ChireJavaMod extends Mod{
     }
 
     @Override
+    public void init() {
+        Log.info(logInfo("加载: 模组内容初始化(init)"));
+        //修改原版
+        //检查是否为第一次启动(true时代表不是第一次启动)
+        put("started", true);
+        CROverride.overrideBlock();
+        CROverride.overrideUnit();
+        CROverride.overrideUI();
+        if(Vars.ui != null && Vars.ui.settings != null) {
+            Vars.ui.settings.addCategory(getText("crimson-star.setting"), getName("icon"), settingsTable -> {
+                settingsTable.pref(new SettingsMenuDialog.SettingsTable.Setting(Core.bundle.get("eu-show-me-now")) {
+                    @Override
+                    public void add(SettingsMenuDialog.SettingsTable table) {
+                        table.row();
+                    }
+                });
+            });
+        }
+    }
+
+    @Override
     public void loadContent(){
-        Log.info("Loading some example content.");
+        Log.info(logInfo("加载: 模组内容(loadContent)"));
         CRBlocks.load();
         CRPlanets.load();
+        CRPlanets.init();
         CRTechTree.load();
         CRUnitTypes.load();
         runEvents();
-
-        //修改原版
-        Events.on(ClientLoadEvent.class, e -> {
-            //检查是否为第一次启动(true时代表不是第一次启动)
-            put("started", true);
-            ui.join = new CRJoinDialog();
-        });
     }
 //老旧
     public void qwert(Button button) {
@@ -135,6 +151,19 @@ public class ChireJavaMod extends Mod{
                 unitsCreated++;
             }
         });
+    }
+
+    public static String getText(String str){
+        return Core.bundle.format(str);
+    }
+    public static String getName(String add){
+        return ModName + "-" + add;
+    }
+    public static  String logInfo(String info){
+        return "[" + ModName + "] " + info;
+    }
+    public static TextureRegion Load(String name){
+        return atlas.find(name);
     }
 
 }
