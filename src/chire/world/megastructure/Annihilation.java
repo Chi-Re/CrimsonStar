@@ -11,15 +11,21 @@ import arc.scene.ui.layout.Table;
 import arc.util.Time;
 import arc.util.Tmp;
 import mindustry.content.Items;
+import mindustry.content.Planets;
 import mindustry.game.EventType;
 import mindustry.gen.Building;
+import mindustry.gen.Icon;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
+import mindustry.type.Planet;
+import mindustry.ui.Styles;
+import mindustry.ui.dialogs.BaseDialog;
 import mindustry.world.Block;
 
 import static chire.ChireJavaMod.Load;
+import static chire.ChireJavaMod.getText;
 import static mindustry.Vars.*;
 
 public class Annihilation extends Block {
@@ -53,6 +59,7 @@ public class Annihilation extends Block {
 
     public class AcceleratorBuild extends Building {
         public float heat, statusLerp;
+        public Planet[] planets = {Planets.erekir, Planets.serpulo};
 
         @Override
         public void updateTile(){
@@ -107,22 +114,22 @@ public class Annihilation extends Block {
 
         @Override
         public void buildConfiguration(Table table){
-            deselect();
+            table.button(Icon.admin, Styles.cleari, () -> {
+//                Table table1 = new Table();
+//                table1.table(t -> {
+//                }).center().minWidth(370).maxSize(600, 550).grow();
 
-            if(!state.isCampaign() || efficiency <= 0f) return;
+                BaseDialog dialog = new BaseDialog("选择摧毁行星");
+                for (var planet : planets){
+                    dialog.cont.button(getText("planet."+planet.name+".name"), () -> {
 
-            ui.showInfo("This block has been removed from the tech tree as of v7, and no longer has a use.\n\nWill it ever be used for anything? Who knows.");
-
-            if(false)
-                ui.planet.showPlanetLaunch(state.rules.sector, sector -> {
-                    //TODO cutscene, etc...
-
-                    //TODO should consume resources based on destination schem
-                    consume();
-
-                    universe.clearLoadoutInfo();
-                    universe.updateLoadout(sector.planet.generator.defaultLoadout.findCore(), sector.planet.generator.defaultLoadout);
-                });
+                    }).size(100f, 50f);
+                    dialog.cont.row();
+                }
+                dialog.addCloseButton();
+                dialog.show();
+                deselect();
+            }).size(40f);
         }
 
         @Override
