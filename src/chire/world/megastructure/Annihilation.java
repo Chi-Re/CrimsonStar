@@ -1,6 +1,5 @@
 package chire.world.megastructure;
 
-import arc.Events;
 import arc.Graphics;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
@@ -8,11 +7,11 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
+import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
 import mindustry.content.Items;
 import mindustry.content.Planets;
-import mindustry.game.EventType;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
 import mindustry.graphics.Layer;
@@ -26,7 +25,8 @@ import mindustry.world.Block;
 
 import static chire.ChireJavaMod.Load;
 import static chire.ChireJavaMod.getText;
-import static mindustry.Vars.*;
+import static mindustry.Vars.state;
+import static mindustry.Vars.tilesize;
 
 public class Annihilation extends Block {
     public TextureRegion arrowRegion;
@@ -59,7 +59,7 @@ public class Annihilation extends Block {
 
     public class AcceleratorBuild extends Building {
         public float heat, statusLerp;
-        public Planet[] planets = {Planets.erekir, Planets.serpulo};
+        public Seq<Planet> planets = Seq.with(Planets.erekir, Planets.serpulo);
 
         @Override
         public void updateTile(){
@@ -115,10 +115,8 @@ public class Annihilation extends Block {
         @Override
         public void buildConfiguration(Table table){
             table.button(Icon.admin, Styles.cleari, () -> {
-//                Table table1 = new Table();
-//                table1.table(t -> {
-//                }).center().minWidth(370).maxSize(600, 550).grow();
-
+                //去除炮台所在行星
+                planets.remove(state.rules.sector.planet);
                 BaseDialog dialog = new BaseDialog("选择摧毁行星");
                 for (var planet : planets){
                     dialog.cont.button(getText("planet."+planet.name+".name"), () -> {
