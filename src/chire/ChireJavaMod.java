@@ -3,22 +3,15 @@ package chire;
 import arc.Core;
 import arc.Events;
 import arc.files.Fi;
-import arc.func.Boolp;
-import arc.func.Cons;
-import arc.func.Floatc;
-import arc.func.Intc;
 import arc.graphics.g2d.TextureRegion;
 import arc.scene.style.Drawable;
 import arc.scene.ui.Button;
 import arc.scene.ui.layout.Table;
 import arc.util.Log;
-import arc.util.OS;
 import arc.util.Time;
 import chire.content.*;
-import chire.ui.CRJoinDialog;
 import mindustry.Vars;
 import mindustry.content.Planets;
-import mindustry.core.Version;
 import mindustry.game.EventType;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.gen.Icon;
@@ -30,14 +23,10 @@ import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.dialogs.SettingsMenuDialog;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Objects;
 
 import static chire.util.CoreCache.*;
+import static chire.util.DownloadUtil.download;
 import static mindustry.Vars.*;
 
 public class ChireJavaMod extends Mod{
@@ -93,8 +82,8 @@ public class ChireJavaMod extends Mod{
                         boolean[] cancel = {false};
                         float[] progress = {0};
                         int[] length = {0};
-                        Fi file = bebuildDirectory.child("asa.mp4");
-                        String updateUrl = "http://192.168.0.105:5244/d/%E6%88%91%E7%9A%84%E7%A1%AC%E7%9B%98/%E8%A7%86%E9%A2%91/%E5%85%B6%E4%BB%96/A%E7%BA%A7%E9%95%BF.mp4";
+                        Fi file = bebuildDirectory.child("Mindustry-CN-ARC-master.zip");
+                        String updateUrl = "https://i11.lanzoug.com/06061300120013321bb/2023/06/06/5ec949f72695f30e94df1877b768ccfe.zip?st=N-GlpdJD0ZHbOTYTE0jhnQ&e=1686032954&b=BRoAaQVrA2JYeF57UnZXIVN_aCntRE1YeVCpfE1EEXx5VKl0wA2ICdAcmV2QKKFV_aUX4MOVYn&fi=120013321&pid=36-108-195-159&up=2&mp=0&co=1";
 
                         BaseDialog dialogdown = new BaseDialog("@be.updating");
                         download(updateUrl, file, i -> length[0] = i, v -> progress[0] = v, () -> cancel[0], () -> {
@@ -199,31 +188,5 @@ public class ChireJavaMod extends Mod{
     }
     public static TextureRegion Load(String name){
         return Core.atlas.find(name);
-    }
-
-    private void download(String furl, Fi dest, Intc length, Floatc progressor, Boolp canceled, Runnable done, Cons<Throwable> error) {
-        mainExecutor.submit(() -> {
-            try {
-                HttpURLConnection con = (HttpURLConnection) new URL(furl).openConnection();
-                BufferedInputStream in = new BufferedInputStream(con.getInputStream());
-                OutputStream out = dest.write(false, 4096);
-
-                byte[] data = new byte[4096];
-                long size = con.getContentLength();
-                long counter = 0;
-                length.get((int) size);
-                int x;
-                while ((x = in.read(data, 0, data.length)) >= 0 && !canceled.get()) {
-                    counter += x;
-                    progressor.get((float) counter / (float) size);
-                    out.write(data, 0, x);
-                }
-                out.close();
-                in.close();
-                if (!canceled.get()) done.run();
-            } catch (Throwable e) {
-                error.get(e);
-            }
-        });
     }
 }
