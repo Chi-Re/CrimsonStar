@@ -19,8 +19,8 @@ ext{
     sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
     gamePath = /*your own game path*/ "C:\\Users\\Administrator\\Desktop\\Mindustry-CN-ARC-Desktop-30386.jar"
     modPath = /*your own mod path*/ "C:\\Users\\Administrator\\AppData\\Roaming\\Mindustry\\mods"
-    uncVersion = '1.7.4'
-    loadunc = false
+    uncVersion = '1.8.0'
+    loadunc = true
 }
 
 //java 8 backwards compatibility flag
@@ -67,6 +67,8 @@ dependencies{
         annotationProcessor "com.github.EB-wilson.UniverseCore:annotations:$uncVersion"
     }
     annotationProcessor "com.github.Anuken:jabel:$jabelVersion"
+
+    implementation 'com.github.Chi-Re:ChireUtil:1.0.8'
 }
 
 //force arc version

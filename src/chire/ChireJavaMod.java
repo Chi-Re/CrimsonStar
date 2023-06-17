@@ -10,6 +10,7 @@ import arc.scene.ui.layout.Table;
 import arc.util.Log;
 import arc.util.Time;
 import chire.content.*;
+import chireutil.util.core;
 import mindustry.Vars;
 import mindustry.content.Planets;
 import mindustry.game.EventType;
@@ -78,6 +79,9 @@ public class ChireJavaMod extends Mod{
                     dialog1.cont.button("清除", () -> {
                         remove(keytxt);
                     }).size(100f, 50f).row();
+                    dialog1.cont.button("弹窗", () -> {
+                        ui.hudfrag.showToast(Icon.warning, Core.bundle.format("planet.lost", "planet.name"));
+                    }).size(100f, 50f).row();
                     dialog1.cont.button("下载", () -> {
                         boolean[] cancel = {false};
                         float[] progress = {0};
@@ -119,6 +123,8 @@ public class ChireJavaMod extends Mod{
                 dialog.show();
             });
         });
+
+        core.main();
     }
 
     @Override
@@ -132,7 +138,7 @@ public class ChireJavaMod extends Mod{
         CROverride.overrideUI();
         if(Vars.ui != null && Vars.ui.settings != null) {
             Vars.ui.settings.addCategory(getText("crimson-star.setting"), getName("icon"), settingsTable -> {
-                settingsTable.pref(new SettingsMenuDialog.SettingsTable.Setting(Core.bundle.get("eu-show-me-now")) {
+                settingsTable.pref(new SettingsMenuDialog.SettingsTable.Setting(getText("crimson-star.setting")) {
                     @Override
                     public void add(SettingsMenuDialog.SettingsTable table) {
                         table.row();

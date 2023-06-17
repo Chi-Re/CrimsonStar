@@ -1,4 +1,5 @@
-![Logo](assets/icon.png)
+<img alt="Logo" height="300" width="300" src="assets/icon.png"/>
+
 # 绯红星海(CrimsonStar)
 **一个我用来测试的java模组,目前还在测试阶段,目标是更好的玩法**
 
