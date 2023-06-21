@@ -68,7 +68,7 @@ dependencies{
     }
     annotationProcessor "com.github.Anuken:jabel:$jabelVersion"
 
-    implementation 'com.github.Chi-Re:ChireUtil:1.0.8'
+    implementation 'com.github.Chi-Re:ChireUtil:1.1.0'
 }
 
 //force arc version

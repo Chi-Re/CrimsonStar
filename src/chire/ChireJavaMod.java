@@ -10,7 +10,7 @@ import arc.scene.ui.layout.Table;
 import arc.util.Log;
 import arc.util.Time;
 import chire.content.*;
-import chireutil.util.core;
+import chireutil.python.Python;
 import mindustry.Vars;
 import mindustry.content.Planets;
 import mindustry.game.EventType;
@@ -23,6 +23,7 @@ import mindustry.ui.MobileButton;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.dialogs.SettingsMenuDialog;
+import universecore.UncCore;
 
 import java.util.Objects;
 
@@ -123,8 +124,6 @@ public class ChireJavaMod extends Mod{
                 dialog.show();
             });
         });
-
-        core.main();
     }
 
     @Override
