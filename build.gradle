@@ -14,13 +14,13 @@ repositories{
 
 ext{
     //the build number that this mod is made for
-    mindustryVersion = 'v141.2'
+    mindustryVersion = 'v145'
     jabelVersion = "93fde537c7"
     sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
     gamePath = /*your own game path*/ "C:\\Users\\Administrator\\Desktop\\Mindustry-CN-ARC-Desktop-30386.jar"
     modPath = /*your own mod path*/ "C:\\Users\\Administrator\\AppData\\Roaming\\Mindustry\\mods"
     uncVersion = '1.8.0'
-    loadunc = true
+    loadunc = false
 }
 
 //java 8 backwards compatibility flag
