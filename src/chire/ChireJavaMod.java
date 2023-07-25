@@ -23,7 +23,6 @@ import mindustry.ui.MobileButton;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.dialogs.SettingsMenuDialog;
-import universecore.UncCore;
 
 import java.util.Objects;
 
@@ -150,12 +149,12 @@ public class ChireJavaMod extends Mod{
     @Override
     public void loadContent(){
         Log.info(logInfo("加载: 模组内容(loadContent)"));
+        CRBullets.load();
         CRBlocks.load();
         CRPlanets.load();
         CRPlanets.init();
         CRTechTree.load();
         CRUnitTypes.load();
-        runEvents();
     }
 //老旧
     public void qwert(Button button) {
