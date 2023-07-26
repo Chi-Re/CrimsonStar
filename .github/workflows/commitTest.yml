@@ -21,6 +21,9 @@ jobs:
       run: |
         java --version
         d8 --version
+        
+    - name: chire
+      run: ./gradle wrapper --gradle-version 2.13
+        
     - name: Build and dexify mod jar file
-      run: |
-        ./gradlew jar
+      run: ./gradlew jar
