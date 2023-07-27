@@ -29,6 +29,8 @@ public class CRBlocks {
             requirements(Category.effect, BuildVisibility.campaignOnly, with(Items.copper, 1));
             size = 3;
             itemCapacity = 100;
+
+            launchTime = 10f * 60f;
         }};
     }
 }
