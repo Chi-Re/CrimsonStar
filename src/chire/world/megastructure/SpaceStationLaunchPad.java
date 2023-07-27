@@ -51,6 +51,7 @@ public class SpaceStationLaunchPad extends Block {
     @Override
     public void load() {
         super.load();
+        //cs
         baseRegion = ChireJavaMod.Load("launch-pad");
         podRegion = ChireJavaMod.Load("launchpod");
     }
