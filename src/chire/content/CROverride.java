@@ -1,6 +1,6 @@
 package chire.content;
 
-import chire.ui.CRJoinDialog;
+import chire.ui.dialogs.CRJoinDialog;
 
 import static mindustry.Vars.ui;
 

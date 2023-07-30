@@ -1,17 +1,22 @@
 package chire.world.megastructure;
 
 import arc.Core;
+import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.scene.ui.Button;
+import arc.scene.ui.TextArea;
 import arc.scene.ui.layout.Table;
+import arc.scene.ui.layout.WidgetGroup;
 import arc.struct.EnumSet;
+import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import chire.ChireJavaMod;
 import chire.content.CREffects;
+import chire.ui.StatLabel;
 import chire.world.Block;
 import chire.world.meta.CRStat;
 import mindustry.Vars;
@@ -23,9 +28,14 @@ import mindustry.gen.Icon;
 import mindustry.graphics.Pal;
 import mindustry.type.Item;
 import mindustry.ui.Bar;
+import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
+import mindustry.ui.dialogs.GameOverDialog;
 import mindustry.world.meta.BlockFlag;
 import org.jetbrains.annotations.NotNull;
+
+import static chire.ui.StatLabel.addStat;
+import static chire.ui.StatLabel.addStats;
 
 public class SpaceStationLaunchPad extends Block {
     public TextureRegion baseRegion;
@@ -134,16 +144,35 @@ public class SpaceStationLaunchPad extends Block {
         public void buildConfiguration(@NotNull Table table) {
             table.button(Icon.bookOpen, () -> {
                 BaseDialog dialog = new BaseDialog("控制面板");
-                dialog.cont.pane(inner -> inner.pane(table1 -> table1.pane(t -> {
-                    t.table(style.checked, (inde) -> {
-                        inde.button("确定", () -> {
-                            lunch();
-                            dialog.hide();
-                        }).size(300, 50f).row();
+                Color color = Color.white.cpy();
 
-                        dialog.addCloseListener();
-                    }).left().color(Pal.gray).size(300, 300).fillX().row();
-                }).left().fillX().growY().row()).left().growY().center().row()).grow();
+                dialog.cont.table(t -> {
+                    t.pane(p -> {
+                        p.margin(13f);
+                        p.left().defaults().left();
+                        p.setBackground(Styles.black3);
+
+
+                        p.table(stats -> {
+//                            addStat(stats, "测试", 1, 0.5f);
+//                            addStat(stats, "测试", "字符串1", 0.5f);
+//                            addStat(stats, "测试", false, 0.5f);
+//                            addStat(stats, "测试", true, 0.5f);
+                            addStats(stats,
+                                "测试1", 1,
+                                "测试2", "字符串1",
+                                "测试3", false,
+                                "测试4", true
+                            );
+
+                            stats.add("whit").color(color).update(a -> a.setColor(color)).row();
+                        }).top().grow().row();
+                    }).grow().pad(12).top();
+                }).center().minWidth(370).maxSize(600, 550).grow().update(scrollPane -> {
+                    color.a = (float) (Math.sin(Time.time * 0.1) * 0.5 + 0.5);
+                });
+
+                dialog.addCloseButton();
                 dialog.show();
             });
         }

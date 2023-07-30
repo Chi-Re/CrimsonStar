@@ -1,4 +1,4 @@
-package chire.ui;
+package chire.ui.dialogs;
 
 import arc.Core;
 import arc.Events;
@@ -14,6 +14,7 @@ import arc.struct.Seq;
 import arc.util.*;
 import arc.util.Timer.Task;
 import arc.util.serialization.Jval;
+import chire.ui.CRLegacyIO;
 import mindustry.Vars;
 import mindustry.core.Version;
 import mindustry.game.EventType.ClientPreConnectEvent;
