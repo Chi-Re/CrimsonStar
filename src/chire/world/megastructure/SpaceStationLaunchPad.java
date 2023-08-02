@@ -31,11 +31,14 @@ import mindustry.ui.Bar;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.dialogs.GameOverDialog;
+import chire.ui.dialogs.LoadingFragment;
 import mindustry.world.meta.BlockFlag;
 import org.jetbrains.annotations.NotNull;
 
 import static chire.ui.StatLabel.addStat;
 import static chire.ui.StatLabel.addStats;
+import static chire.world.meta.CRColor.gameYellow;
+import static chire.world.meta.CRColor.getMessageRGBA;
 
 public class SpaceStationLaunchPad extends Block {
     public TextureRegion baseRegion;
@@ -158,14 +161,17 @@ public class SpaceStationLaunchPad extends Block {
 //                            addStat(stats, "测试", "字符串1", 0.5f);
 //                            addStat(stats, "测试", false, 0.5f);
 //                            addStat(stats, "测试", true, 0.5f);
+                            //"测试1", 1, "测试2", "字符串1", "测试3", false, "测试4", true
                             addStats(stats,
-                                "测试1", 1,
-                                "测试2", "字符串1",
-                                "测试3", false,
-                                "测试4", true
+                                    "测试1", 1,
+                                    "测试2", "字符串1",
+                                    "测试3", false,
+                                    "测试4", true
                             );
 
-                            stats.add("whit").color(color).update(a -> a.setColor(color)).row();
+                            stats.add("发射状态:").color(color).update(a -> a.setColor(color)).row();
+                            LoadingFragment loadingFragment = new LoadingFragment();
+                            loadingFragment.show("测试", gameYellow);
                         }).top().grow().row();
                     }).grow().pad(12).top();
                 }).center().minWidth(370).maxSize(600, 550).grow().update(scrollPane -> {
