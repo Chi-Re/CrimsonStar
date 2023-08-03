@@ -170,8 +170,8 @@ public class SpaceStationLaunchPad extends Block {
                             );
 
                             stats.add("发射状态:").color(color).update(a -> a.setColor(color)).row();
-                            LoadingFragment loadingFragment = new LoadingFragment();
-                            loadingFragment.show("测试", gameYellow);
+//                            LoadingFragment loadingFragment = new LoadingFragment();
+//                            loadingFragment.show("测试", gameYellow);
                         }).top().grow().row();
                     }).grow().pad(12).top();
                 }).center().minWidth(370).maxSize(600, 550).grow().update(scrollPane -> {

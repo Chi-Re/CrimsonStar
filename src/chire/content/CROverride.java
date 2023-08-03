@@ -15,4 +15,7 @@ public class CROverride {
     public static void overrideUI(){
         ui.join = new CRJoinDialog();
     }
+    public static void overrideData(){
+
+    }
 }
