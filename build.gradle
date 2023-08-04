@@ -17,8 +17,8 @@ ext{
     mindustryVersion = 'v145'
     jabelVersion = "93fde537c7"
     sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
-    gamePath = /*your own game path*/ "C:\\Users\\Administrator\\Desktop\\Mindustry.jar"
-    modPath = /*your own mod path*/ "C:\\Users\\Administrator\\AppData\\Roaming\\Mindustry\\mods"
+    gamePath = /*your own game path*/ "C:\\Users\\${System.getenv("USERNAME")}\\Desktop\\Mindustry.jar"
+    modPath = /*your own mod path*/ "C:\\Users\\${System.getenv("USERNAME")}\\AppData\\Roaming\\Mindustry\\mods"
     uncVersion = '1.8.0'
     loadunc = false
 }
@@ -146,4 +146,9 @@ task deploy(type: Jar){
             delete "$buildDir/libs/${project.archivesBaseName}Android.jar"
         }
     }
+}
+
+
+task testS {
+    System.out.println(System.getenv("USERNAME"))
 }
