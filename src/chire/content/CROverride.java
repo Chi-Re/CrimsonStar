@@ -1,6 +1,6 @@
 package chire.content;
 
-import chire.ui.CRJoinDialog;
+import chire.ui.dialogs.CRJoinDialog;
 
 import static mindustry.Vars.ui;
 
@@ -14,5 +14,8 @@ public class CROverride {
     }
     public static void overrideUI(){
         ui.join = new CRJoinDialog();
+    }
+    public static void overrideData(){
+
     }
 }

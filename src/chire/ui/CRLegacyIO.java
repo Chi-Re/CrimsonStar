@@ -2,6 +2,7 @@ package chire.ui;
 
 import arc.Core;
 import arc.struct.Seq;
+import chire.ui.dialogs.CRJoinDialog;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;

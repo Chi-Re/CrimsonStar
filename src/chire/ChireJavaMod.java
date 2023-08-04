@@ -134,6 +134,7 @@ public class ChireJavaMod extends Mod{
         CROverride.overrideBlock();
         CROverride.overrideUnit();
         CROverride.overrideUI();
+        CROverride.overrideData();
         if(Vars.ui != null && Vars.ui.settings != null) {
             Vars.ui.settings.addCategory(getText("crimson-star.setting"), getName("icon"), settingsTable -> {
                 settingsTable.pref(new SettingsMenuDialog.SettingsTable.Setting(getText("crimson-star.setting")) {
